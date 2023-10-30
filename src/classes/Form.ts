@@ -1,7 +1,7 @@
 import { each, every, filter, isEmpty, keys } from 'lodash';
 import { TFieldProps, TFormField } from '~/types';
 import { FormField } from '~/classes';
-import { computed, makeObservable } from 'mobx';
+import { computed, makeObservable, observable, reaction } from 'mobx';
 
 type TOptions = {
 	formTemplate: string;
@@ -37,7 +37,12 @@ class Form<TEntity> {
 		this.values = this.values.bind(this);
 		makeObservable(this, {
 			isValid: computed,
+			isEmpty: computed,
 		});
+		reaction(
+			() => this.isEmpty,
+			(newValue) => newValue && this.clearErrors()
+		);
 	}
 
 	get isValid() {
@@ -46,6 +51,16 @@ class Form<TEntity> {
 
 	get form() {
 		return this._form;
+	}
+
+	get isEmpty() {
+		return every(this.form.fields, (formField: TFormField) =>
+			isEmpty(formField.value)
+		);
+	}
+
+	clearErrors() {
+		each(this.form.fields, (field) => field.resetError());
 	}
 
 	values = () => {

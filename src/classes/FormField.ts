@@ -1,4 +1,4 @@
-import { each, includes, isArray, isEmpty, isFunction } from 'lodash';
+import { each, includes, isFunction } from 'lodash';
 import { FunctionComponent } from 'react';
 import { PasswordInput, TextInput } from '~/components';
 import { TFieldProps, TFormField } from '~/types';
@@ -20,6 +20,7 @@ class FormField<TEntity> {
 		(value: string) => { isValid: boolean; error: string | undefined }
 	> = [];
 	private form: TForm = [];
+	private _component: FunctionComponent = TextInput as FunctionComponent;
 	value: any;
 	entity: TEntity;
 	error: string | undefined;
@@ -42,6 +43,7 @@ class FormField<TEntity> {
 			onChange: action,
 			validate: action,
 			toggleDynamicRules: action,
+			resetError: action,
 		});
 		this.fieldProps = fieldProps;
 		this.entity = entity;
@@ -65,24 +67,27 @@ class FormField<TEntity> {
 	}
 
 	initialize() {
-		this.validate();
-		this.initialized = true;
-	}
-
-	get component(): FunctionComponent {
 		const components: { [key: string]: any } = {
 			text: TextInput,
 			password: PasswordInput,
 		};
-		return components[this.type];
+		this._component = components[this.type];
+		this.validate();
+		this.resetError();
+	}
+
+	get component(): FunctionComponent {
+		return this._component;
 	}
 
 	validate() {
 		const validation = validateField(this.value, this.validators);
-		if (this.initialized) {
-			this.error = validation.error;
-		}
+		this.error = validation.error;
 		this.isValid = validation.isValid;
+	}
+
+	resetError() {
+		this.error = undefined;
 	}
 
 	get validators() {

@@ -20,6 +20,7 @@ type TFormField = {
 	addOnChangeCallback: (func: Function) => void;
 	toggleDynamicRules: Function;
 	rules: TRules;
+	resetError: () => void;
 };
 
 export default TFormField;

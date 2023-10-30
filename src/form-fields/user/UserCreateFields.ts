@@ -16,8 +16,7 @@ const UserCreateFields: Array<TFieldProps> = [
 		label: 'Password',
 		type: fieldTypeConstants.password,
 		rules: {
-			required: (formValues: { [key: string]: any }) =>
-				!isEmpty(formValues.username) && !isEmpty(formValues.email),
+			required: true,
 		},
 	},
 	{
