@@ -3,8 +3,16 @@ import React from 'react';
 import { TFieldComponentProps } from '~/types';
 
 function TextInput(props: TFieldComponentProps) {
-	const { error, placeholder, label, value, onChange, className, rules } =
-		props;
+	const {
+		error,
+		placeholder,
+		label,
+		value,
+		onChange,
+		className,
+		rules,
+		disabled,
+	} = props;
 	return (
 		<React.Fragment>
 			<span>{label}</span>
@@ -16,6 +24,7 @@ function TextInput(props: TFieldComponentProps) {
 				onChange={onChange}
 				placeholder={placeholder}
 				value={value}
+				disabled={disabled}
 			/>
 		</React.Fragment>
 	);

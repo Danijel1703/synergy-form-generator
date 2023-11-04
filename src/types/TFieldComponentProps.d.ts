@@ -7,6 +7,7 @@ type TFieldComponentProps = {
 	isValid: boolean;
 	error?: string;
 	rules: TRules;
+	disabled: boolean;
 };
 
 export default TFieldComponentProps;

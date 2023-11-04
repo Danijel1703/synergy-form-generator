@@ -3,8 +3,16 @@ import React from 'react';
 import { TFieldComponentProps } from '~/types';
 
 function PasswordInput(props: TFieldComponentProps) {
-	const { onChange, placeholder, label, className, value, error, rules } =
-		props;
+	const {
+		onChange,
+		placeholder,
+		label,
+		className,
+		value,
+		error,
+		rules,
+		disabled,
+	} = props;
 	return (
 		<React.Fragment>
 			<span>{label}</span>
@@ -16,6 +24,7 @@ function PasswordInput(props: TFieldComponentProps) {
 				type="password"
 				onChange={onChange}
 				placeholder={placeholder}
+				disabled={disabled}
 			/>
 		</React.Fragment>
 	);

@@ -1,9 +1,6 @@
 import { FunctionComponent } from 'react';
 
-type TFormField = {
-	validators: Array<
-		(value: any) => { isValid: boolean; error: string | undefined }
-	>;
+type TFormFieldBase = {
 	name: string;
 	label: string;
 	type: string;
@@ -15,12 +12,8 @@ type TFormField = {
 	className?: string;
 	error?: string;
 	id: string;
-	addFormReference: Function;
-	dynamicRules: object;
 	addOnChangeCallback: (func: Function) => void;
-	toggleDynamicRules: Function;
 	rules: TRules;
-	resetError: () => void;
 };
 
-export default TFormField;
+export default TFormFieldBase;
