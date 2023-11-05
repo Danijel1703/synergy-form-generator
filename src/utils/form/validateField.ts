@@ -13,9 +13,16 @@ function validateField(
 ): Validation {
   const defaultValue = { isValid: true, error: undefined };
   if (isEmpty(validators)) return defaultValue;
-  const valid = every(validators, (validator) => validator(value).isValid);
+  const valid = every(
+    validators,
+    async (validator) => await validator(value).isValid
+  );
   if (valid) defaultValue;
-  const func = find(validators, (validator) => !validator(value).isValid);
+  const func = find(
+    validators,
+    async (validator) => await !validator(value).isValid
+  );
+  //Refactor this to not loop twice
   return isFunction(func) ? func(value) : defaultValue;
 }
 
