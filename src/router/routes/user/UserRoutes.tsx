@@ -1,8 +1,6 @@
-import { UserCreatePage } from "~/pages";
-import { UserCreateStore } from "~/stores";
-import { inject } from "~/utils";
+import { UserCreatePage } from '~/pages';
 
 export default {
-  path: "/",
-  element: inject(UserCreatePage, UserCreateStore),
+	path: '/',
+	element: <UserCreatePage />,
 };
