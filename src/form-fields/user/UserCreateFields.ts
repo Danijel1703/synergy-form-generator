@@ -1,3 +1,4 @@
+import { isEmpty } from "lodash";
 import { fieldTypeConstants } from "~/constants";
 import { TFieldProps } from "~/types";
 
@@ -8,6 +9,7 @@ const UserCreateFields: Array<TFieldProps> = [
     type: fieldTypeConstants.text,
     rules: {
       required: true,
+      mustContainUpper: () => true,
     },
   },
   {
@@ -17,6 +19,18 @@ const UserCreateFields: Array<TFieldProps> = [
     rules: {
       required: true,
     },
+    customRules: [
+      {
+        name: "maxValue",
+        validator: (value: any) => {
+          return {
+            isValid: false,
+            error: "neku error",
+          };
+        },
+        isActive: (values: any) => isEmpty(values.username),
+      },
+    ],
   },
   {
     name: "confirmedPassword",

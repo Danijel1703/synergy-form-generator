@@ -1,14 +1,14 @@
 import { FunctionComponent } from "react";
+import { TCustomRules } from ".";
+
 type TFieldProps = {
   name: string;
   label: string;
   type: string;
   className?: string;
-  validators?: Array<
-    (value: any) => { isValid: boolean; error: string | undefined }
-  >;
   customComponent?: FunctionComponent;
   rules: TRules;
+  customRules?: TCustomRules;
 };
 
 export default TFieldProps;

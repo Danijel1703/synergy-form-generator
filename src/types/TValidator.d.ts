@@ -1,6 +1,8 @@
-type TValidator = (value: any) => {
-	isValid: boolean;
-	error: string | undefined;
+import { TValidatorFunction } from ".";
+
+type TValidator = {
+  name: string;
+  validator: TValidatorFunction;
 };
 
 export default TValidator;
