@@ -1,4 +1,16 @@
-import { compact, each, includes, isEmpty, isFunction, map } from "lodash";
+import {
+  compact,
+  each,
+  every,
+  find,
+  includes,
+  isEmpty,
+  isFunction,
+  map,
+  pull,
+  remove,
+  size,
+} from "lodash";
 import { FunctionComponent } from "react";
 import {
   TCustomRules,
@@ -22,20 +34,29 @@ class FormField<TEntity> {
     inputComponents.TextInput as FunctionComponent;
   private onChangeCallbacks: Array<Function> = [];
 
-  dynamicRules: TDynamicRules = {};
+  id: string;
   value: any;
   error: string | undefined;
   isValid: boolean = true;
-  rules: { [key: string]: boolean } = {};
-  validators: Array<TValidator> = [];
-  entity: TEntity;
   type: string;
   name: string;
-  id: string;
   label: string;
+  entity: TEntity;
+
+  dynamicRules: TDynamicRules = {};
+  rules: { [key: string]: boolean } = new Proxy(
+    {},
+    {
+      set: (obj: any, prop, value) => {
+        obj[prop] = value;
+        this.setValidators();
+        return true;
+      },
+    }
+  );
+  validators: Array<TValidator> = [];
   customComponent: FunctionComponent | undefined;
   customRules: TCustomRules | undefined;
-  customValidators: { [key: string]: TValidatorFunction } = {};
 
   constructor(fieldProps: TFieldProps, entity: TEntity) {
     makeObservable(this, {
@@ -85,12 +106,10 @@ class FormField<TEntity> {
     this.isValid = validation.isValid;
   }
 
-  setValue(value: any, validate = true) {
+  setValue(value: any) {
     this.value = value;
     this.entity[this.name as keyof TEntity] = value;
-    if (validate) {
-      this.validate();
-    }
+    this.validate();
   }
 
   resetError() {
@@ -98,11 +117,10 @@ class FormField<TEntity> {
   }
 
   onChange(e: React.ChangeEvent<HTMLInputElement>) {
-    this.setValue(e.target.value, false);
+    this.setValue(e.target.value);
     each(this.onChangeCallbacks, (onChangeCallback) => {
       isFunction(onChangeCallback) && onChangeCallback(this);
     });
-    this.validate();
   }
 
   addOnChangeCallback(onChangeCallback: Function) {
@@ -112,7 +130,6 @@ class FormField<TEntity> {
   toggleDynamicRules(dynamicRules: TDynamicRules) {
     each(dynamicRules, (func, key) => {
       this.rules[key] = func(this.form.values());
-      this.setValidators();
     });
   }
 
@@ -121,33 +138,32 @@ class FormField<TEntity> {
       if (isFunction(value)) return (this.dynamicRules[key] = value);
       this.rules[key] = Boolean(value);
     });
-    this.setValidators();
   }
 
   private setCustomRules(rules: TCustomRules) {
     each(rules, ({ name, validator, isActive }) => {
-      this.customValidators[name] = validator;
+      MainModule.setValidator({ name, validator });
       if (isFunction(isActive)) return (this.dynamicRules[name] = isActive);
       this.rules[name] = isActive;
     });
-    this.setValidators();
   }
 
   private setValidators() {
-    const temp: any = {
-      ...validators,
-      ...this.validators,
-      ...this.customValidators,
-    };
     const v = compact(
       map(this.rules, (value, key) => {
         if (value) {
-          return { name: key, validator: temp[key] };
+          return { name: key, validator: MainModule.validators[key] };
         }
+        remove(this.validators, (validator) => validator.name === key);
       })
     ) as Array<TValidator>;
+
     each(v, (validator) => {
-      if (!includes(this.validators, validator)) {
+      const validatorExists = !find(
+        this.validators,
+        (exValidator) => exValidator.name === validator.name
+      );
+      if (validatorExists) {
         this.validators.push(validator);
       }
     });
