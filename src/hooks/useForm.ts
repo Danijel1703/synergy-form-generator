@@ -1,27 +1,21 @@
-import { FormGenerator } from '~/classes';
-import { TFieldProps, TOptions } from '~/types';
+import { Form } from "~/classes";
+import { TFieldProps, TOptions } from "~/types";
 
 function useForm<TEntity>({
-	EntityClass,
-	fieldProps,
-	onSubmit,
-	options,
-	entity,
+  EntityClass,
+  fieldProps,
+  onSubmit,
+  options,
+  entity,
 }: {
-	EntityClass: new () => TEntity; //Make an optional param
-	fieldProps: Array<TFieldProps>;
-	onSubmit: Function;
-	options?: TOptions;
-	entity?: TEntity;
+  EntityClass: new () => TEntity; //Make an optional param
+  fieldProps: Array<TFieldProps>;
+  onSubmit: Function;
+  options?: TOptions;
+  entity?: TEntity;
 }) {
-	const form = new FormGenerator(
-		EntityClass,
-		fieldProps,
-		onSubmit,
-		options,
-		entity
-	);
-	return form;
+  const form = new Form(EntityClass, fieldProps, onSubmit, options, entity);
+  return form;
 }
 
 export default useForm;

@@ -1,9 +1,8 @@
 type TRule = {
-	name: string;
-	isActive: boolean;
-	isValid: boolean;
-	error: string | undefined;
-	clearError: () => void;
+  name: string;
+  isActive: boolean;
+  isValid: boolean;
+  error: string | undefined;
 };
 
 export default TRule;
