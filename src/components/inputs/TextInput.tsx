@@ -13,6 +13,7 @@ function TextInput(props: TFieldComponentProps) {
 		rules,
 		disabled,
 	} = props;
+
 	return (
 		<React.Fragment>
 			<span>{label}</span>

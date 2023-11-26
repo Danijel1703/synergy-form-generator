@@ -7,13 +7,11 @@ type TFormFieldBase = {
 	value: string | number | undefined;
 	onChange: Function;
 	component: FunctionComponent;
-	validate: Function;
-	isValid: boolean;
 	className?: string;
-	error?: string;
 	id: string;
 	addOnChangeCallback: (func: Function) => void;
-	rules: TRules;
+	isValid: boolean;
+	error: string | undefined;
 };
 
 export default TFormFieldBase;

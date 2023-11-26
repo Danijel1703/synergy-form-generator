@@ -1,9 +1,9 @@
-import { TValidatorFunction } from ".";
-
 type CustomRule = {
-  name: string;
-  validator: TValidatorFunction;
-  isActive: boolean | ((formValues: any) => boolean);
+	validator: (values: any) => {
+		isValid: boolean;
+		error: string | undefined;
+	};
+	isActive: boolean | ((formValues: any) => boolean);
 };
 
 type TCustomRules = Array<CustomRule>;

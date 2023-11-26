@@ -6,7 +6,7 @@ type TFieldComponentProps = {
 	className?: string;
 	isValid: boolean;
 	error?: string;
-	rules: TRules;
+	rules: TSynergyRules;
 	disabled: boolean;
 };
 

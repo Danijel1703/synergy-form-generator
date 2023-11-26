@@ -1,11 +1,9 @@
-import { TFormFieldBase, TValidator } from ".";
+import { TForm, TFormFieldBase } from '.';
 
 type TFormField = TFormFieldBase & {
-  validators: Array<TValidator>;
-  addFormReference: Function;
-  dynamicRules: object;
-  toggleDynamicRules: Function;
-  resetError: () => void;
+	addFormReference: Function;
+	form: TForm;
+	errors: Array<{ error: string; rule: string }>;
 };
 
 export default TFormField;
