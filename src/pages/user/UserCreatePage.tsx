@@ -6,18 +6,19 @@ import { UserCreateModel } from "~/models";
 import { UserCreateFields } from "~/form-fields";
 
 const UserCreatePage = () => {
-  const { fields, onSubmit, isValid } = useForm<UserCreateModel>({
-    EntityClass: UserCreateModel,
-    onSubmit: () => {},
-    fieldProps: UserCreateFields,
-  });
-  return (
-    <div>
-      <div className="form-wrapper">
-        <Form fields={fields} onSubmit={() => onSubmit()} isValid={isValid} />
-      </div>
-    </div>
-  );
+	const { fields, onSubmit, isValid } = useForm<UserCreateModel>({
+		EntityClass: UserCreateModel,
+		onSubmit: () => {},
+		fieldProps: UserCreateFields,
+	});
+
+	return (
+		<div>
+			<div className="form-wrapper">
+				<Form fields={fields} onSubmit={() => onSubmit()} isValid={isValid} />
+			</div>
+		</div>
+	);
 };
 
 export default observer(UserCreatePage);

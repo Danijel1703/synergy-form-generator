@@ -1,6 +1,6 @@
-import { observer } from 'mobx-react';
-import React from 'react';
-import { TFieldComponentProps } from '~/types';
+import { observer } from "mobx-react";
+import React from "react";
+import { TFieldComponentProps } from "~/types";
 
 function TextInput(props: TFieldComponentProps) {
 	const {
@@ -18,7 +18,7 @@ function TextInput(props: TFieldComponentProps) {
 		<React.Fragment>
 			<span>{label}</span>
 			<span>{error}</span>
-			{rules.required ? 'Required' : ''}
+			{rules.required ? "Required" : ""}
 			<input
 				className={className}
 				type="text"
