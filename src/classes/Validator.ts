@@ -1,4 +1,4 @@
-import { computed, makeObservable, observable } from "mobx";
+import { action, computed, makeObservable, observable } from "mobx";
 import { TFormField } from "~/types";
 
 class Validator {
@@ -8,6 +8,8 @@ class Validator {
 		error: string | undefined;
 	};
 	isActive: ((value: any) => boolean) | boolean = false;
+	_isValid: boolean = false;
+	_error: string | undefined;
 
 	constructor(
 		validator: (value: any) => {
@@ -20,6 +22,9 @@ class Validator {
 			value: computed,
 			error: computed,
 			isValid: computed,
+			validate: action,
+			_isValid: observable,
+			_error: observable,
 			isActive: observable,
 		});
 		this.field = field;
@@ -30,9 +35,11 @@ class Validator {
 		const result = this.validator(value);
 		if (result instanceof Promise) {
 			const validation = await result;
-			return validation;
+			this._isValid = validation.isValid;
+			this._error = validation.error;
 		} else {
-			return result;
+			this._isValid = result.isValid;
+			this._error = result.error;
 		}
 	}
 
@@ -42,14 +49,14 @@ class Validator {
 
 	get isValid() {
 		if (!this.isActive) return true;
-		const value = this.value;
-		return (async () => await this.validator(value).isValid)();
+		this.validate(this.value);
+		return this._isValid;
 	}
 
 	get error() {
 		if (!this.isActive) return undefined;
-		const value = this.value;
-		return (async () => await this.validator(value).error)();
+		this.validate(this.value);
+		return this._error;
 	}
 }
 
