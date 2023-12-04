@@ -1,4 +1,4 @@
-import { isBoolean, isFunction } from "lodash";
+import { each, isEmpty, isFunction } from "lodash";
 import { TFormField } from "~/types";
 import { Validator } from ".";
 import { action, makeObservable } from "mobx";
@@ -10,15 +10,21 @@ type RuleConfig = {
 		error: string | undefined;
 	};
 	isActive: boolean | ((values: any) => boolean);
+	dependencies: Array<string>;
 };
 
 class Rule extends Validator {
 	name: string = "";
 	getIsActive: (value: any) => boolean = () => false;
+	dependencies: Array<string> = [];
 
-	constructor({ name, isActive, validator }: RuleConfig, field: TFormField) {
+	constructor(
+		{ name, isActive, validator, dependencies }: RuleConfig,
+		field: TFormField
+	) {
 		super(validator, field);
 		this.name = name;
+		this.dependencies = dependencies;
 		makeObservable(this, {
 			setIsActive: action,
 		});
@@ -38,6 +44,17 @@ class Rule extends Validator {
 	addFieldCallback() {
 		this.field.addOnChangeCallback((field: TFormField) => {
 			this.setIsActive(this.getIsActive(field.form.values));
+		});
+	}
+
+	appendDependecyCallbacks() {
+		if (isEmpty(this.dependencies)) return;
+		each(this.dependencies, (dependency) => {
+			const dependencyField = this.field.form.fields[dependency] as TFormField;
+			dependencyField.addOnChangeCallback(() => {
+				this.setIsActive(this.getIsActive(this.field.form.values));
+				this.validate(this.value);
+			});
 		});
 	}
 }

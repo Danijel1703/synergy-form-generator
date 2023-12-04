@@ -1,4 +1,5 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent } from "react";
+import { TRule } from ".";
 
 type TFormFieldBase = {
 	name: string;
@@ -12,6 +13,8 @@ type TFormFieldBase = {
 	addOnChangeCallback: (func: Function) => void;
 	isValid: boolean;
 	error: string | undefined;
+	dependencies: Array<string>;
+	rules: Array<TRule>;
 };
 
 export default TFormFieldBase;

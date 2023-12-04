@@ -1,5 +1,5 @@
-import { FunctionComponent } from 'react';
-import { TCustomRules } from '.';
+import { FunctionComponent } from "react";
+import { TCustomRules, TGetDropdownItemsFunc } from ".";
 
 type TFieldProps = {
 	name: string;
@@ -10,6 +10,8 @@ type TFieldProps = {
 	rules: TSynergyRules;
 	customRules?: TCustomRules;
 	placeholder?: string;
+	dependencies: Array<string>;
+	getItems?: TGetDropdownItemsFunc;
 };
 
 export default TFieldProps;

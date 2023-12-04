@@ -73,7 +73,10 @@ class Form<TEntity> {
 			);
 			this.fields[field.name] = field as TFormField;
 		});
-		each(keys(this.fields), (key) => Object.freeze(this.fields[key]));
+		each(keys(this.fields), (key) => {
+			each(this.fields[key].rules, (rule) => rule.appendDependecyCallbacks());
+			Object.freeze(this.fields[key]);
+		});
 	}
 }
 

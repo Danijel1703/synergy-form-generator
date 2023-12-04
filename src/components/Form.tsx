@@ -42,6 +42,7 @@ const RenderComponent = observer(
 			rules,
 			disabled,
 			error,
+			dropdownStore,
 		} = formField;
 		const Component = formField.component;
 		return (
@@ -55,6 +56,7 @@ const RenderComponent = observer(
 				rules={rules}
 				disabled={disabled}
 				error={error}
+				dropdownStore={dropdownStore}
 			/>
 		);
 	}

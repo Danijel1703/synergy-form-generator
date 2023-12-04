@@ -1,11 +1,20 @@
 import { compact, each, every, find, isFunction, map } from "lodash";
 import { FunctionComponent } from "react";
-import { TCustomRules, TFieldProps, TForm, TFormField, TRule } from "~/types";
+import {
+	TCustomRules,
+	TDropdownStore,
+	TFieldProps,
+	TForm,
+	TFormField,
+	TRule,
+} from "~/types";
 import { generateRules } from "~/utils";
-import { makeObservable, observable, action, computed, reaction } from "mobx";
+import { makeObservable, observable, action, computed } from "mobx";
 import { v4 as uuidv4 } from "uuid";
 import inputComponents from "~/components/inputComponents";
 import MainModule from "~/main";
+import { fieldTypeConstants } from "~/constants";
+import { DropdownStore } from "~/stores";
 
 class FormField<TEntity> {
 	private fieldProps: TFieldProps;
@@ -18,6 +27,8 @@ class FormField<TEntity> {
 	value: any;
 	entity: TEntity;
 	rules: Array<TRule> = [];
+	dependencies: Array<string>;
+	dropdownStore: TDropdownStore;
 
 	constructor(fieldProps: TFieldProps, entity: TEntity, form: TForm) {
 		makeObservable(this, {
@@ -30,6 +41,7 @@ class FormField<TEntity> {
 			error: computed,
 			errors: computed,
 		});
+		this.dependencies = fieldProps.dependencies;
 		this.fieldProps = fieldProps;
 		this.entity = entity;
 		this.id = uuidv4();
@@ -85,6 +97,15 @@ class FormField<TEntity> {
 
 	private initialize() {
 		this._component = this.customComponent || MainModule.components[this.type];
+		switch (this.type) {
+			case fieldTypeConstants.dropdown: {
+				if (!isFunction(this.fieldProps.getItems)) break;
+				this.dropdownStore = new DropdownStore({
+					getItems: this.fieldProps.getItems,
+				}) as TDropdownStore;
+				break;
+			}
+		}
 	}
 
 	setValue(value: any) {

@@ -1,7 +1,7 @@
-import { each, map } from 'lodash';
-import { TCustomRules, TFormField, TRule } from '~/types';
-import { Rule } from '~/classes';
-import { validators } from './validators';
+import { each, map } from "lodash";
+import { TCustomRules, TFormField, TRule } from "~/types";
+import { Rule } from "~/classes";
+import { validators } from "./validators";
 
 function generateRules(
 	rules: TSynergyRules,
@@ -17,6 +17,7 @@ function generateRules(
 				isValid: boolean;
 				error: string | undefined;
 			},
+			dependencies: field.dependencies,
 		});
 	});
 	if (customRules) {
@@ -25,6 +26,7 @@ function generateRules(
 				name: rule.name,
 				isActive: rule.isActive,
 				validator: rule.validator,
+				dependencies: field.dependencies,
 			});
 		});
 	}

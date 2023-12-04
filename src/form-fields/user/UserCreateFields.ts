@@ -17,9 +17,10 @@ const UserCreateFields: Array<TFieldProps> = [
 		type: fieldTypeConstants.password,
 		rules: {
 			required: (values: any) => {
-				return !isEmpty(values.username);
+				return !isEmpty(values.firstName) && !isEmpty(values.username);
 			},
 		},
+		dependencies: ["firstName", "username"],
 	},
 	{
 		name: "confirmedPassword",
@@ -40,7 +41,7 @@ const UserCreateFields: Array<TFieldProps> = [
 			{
 				name: "someCustomRule",
 				isActive: (values: any) => {
-					return !isEmpty(values.username);
+					return !isEmpty(values.username) && !isEmpty(values.password);
 				},
 				validator: (value: any) => {
 					if (!includes(value, "b")) {
@@ -71,7 +72,12 @@ const UserCreateFields: Array<TFieldProps> = [
 	{
 		name: "lastName",
 		label: "Last Name",
-		type: fieldTypeConstants.text,
+		type: fieldTypeConstants.dropdown,
+		getItems: () => [
+			{ id: 1, value: "first", label: "First" },
+			{ id: 2, value: "second", label: "Second" },
+			{ id: 3, value: "third", label: "Third" },
+		],
 		rules: {
 			required: true,
 		},

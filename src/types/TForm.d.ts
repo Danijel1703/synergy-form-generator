@@ -1,12 +1,13 @@
 import { TFormField } from ".";
 
 type TForm = {
-  fields: { [key: string]: TFormField };
-  values: Function;
-  errors: Array<{
-    field: string;
-    errors: Array<{ rule: string; error: string }>;
-  }>;
+	fields: { [key: string]: TFormField };
+	values: Function;
+	errors: Array<{
+		field: string;
+		errors: Array<{ rule: string; error: string }>;
+	}>;
+	initialized: boolean;
 };
 
 export default TForm;

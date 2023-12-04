@@ -34,9 +34,15 @@ class Validator {
 	async validate(value: any) {
 		const result = this.validator(value);
 		if (result instanceof Promise) {
-			const validation = await result;
-			this._isValid = validation.isValid;
-			this._error = validation.error;
+			try {
+				const validation = await result;
+				this._isValid = validation.isValid;
+				this._error = validation.error;
+			} catch (error) {
+				if (error) console.error(error);
+				this._isValid = false;
+				this._error = "Unexpected error ocurred";
+			}
 		} else {
 			this._isValid = result.isValid;
 			this._error = result.error;
