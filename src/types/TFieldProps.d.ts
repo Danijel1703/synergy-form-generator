@@ -10,8 +10,9 @@ type TFieldProps = {
 	rules: TSynergyRules;
 	customRules?: TCustomRules;
 	placeholder?: string;
-	dependencies: Array<string>;
+	dependencies?: Array<string>;
 	getItems?: TGetDropdownItemsFunc;
+	hideField?: boolean | ((values: any) => boolean);
 };
 
 export default TFieldProps;

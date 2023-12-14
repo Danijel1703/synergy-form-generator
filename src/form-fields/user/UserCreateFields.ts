@@ -70,8 +70,8 @@ const UserCreateFields: Array<TFieldProps> = [
 		},
 	},
 	{
-		name: "lastName",
-		label: "Last Name",
+		name: "role",
+		label: "Role",
 		type: fieldTypeConstants.dropdown,
 		getItems: () => [
 			{ id: 1, value: "first", label: "First" },

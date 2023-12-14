@@ -16,7 +16,7 @@ import MainModule from "~/main";
 import { fieldTypeConstants } from "~/constants";
 import { DropdownStore } from "~/stores";
 
-class FormField<TEntity> {
+class FormField<TEntity> implements TFormField {
 	private fieldProps: TFieldProps;
 	private _component: FunctionComponent =
 		inputComponents.TextInput as FunctionComponent;
@@ -27,8 +27,7 @@ class FormField<TEntity> {
 	value: any;
 	entity: TEntity;
 	rules: Array<TRule> = [];
-	dependencies: Array<string>;
-	dropdownStore: TDropdownStore;
+	dropdownStore?: TDropdownStore;
 
 	constructor(fieldProps: TFieldProps, entity: TEntity, form: TForm) {
 		makeObservable(this, {
@@ -41,15 +40,22 @@ class FormField<TEntity> {
 			error: computed,
 			errors: computed,
 		});
-		this.dependencies = fieldProps.dependencies;
 		this.fieldProps = fieldProps;
 		this.entity = entity;
 		this.id = uuidv4();
 		this.form = form;
 		this.value = this.entity[this.fieldProps.name as keyof TEntity];
-		this.onChange = this.onChange.bind(this);
 		this.setRules(fieldProps.rules, fieldProps.customRules);
 		this.initialize();
+	}
+
+	get hideField() {
+		const hideField = this.fieldProps.hideField;
+		return isFunction(hideField) ? hideField(this.form.values) : hideField;
+	}
+
+	get dependencies() {
+		return this.fieldProps.dependencies || [];
 	}
 
 	get customComponent() {
@@ -102,30 +108,31 @@ class FormField<TEntity> {
 				if (!isFunction(this.fieldProps.getItems)) break;
 				this.dropdownStore = new DropdownStore({
 					getItems: this.fieldProps.getItems,
-				}) as TDropdownStore;
+					setValue: this.setValue,
+				});
 				break;
 			}
 		}
 	}
 
-	setValue(value: any) {
+	setValue = (value: any) => {
 		this.value = value;
 		this.entity[this.name as keyof TEntity] = value;
-	}
+	};
 
-	onChange(e: React.ChangeEvent<HTMLInputElement>) {
+	onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		this.setValue(e.target.value);
 		each(this.onChangeCallbacks, (onChangeCallback) => {
 			isFunction(onChangeCallback) && onChangeCallback(this);
 		});
-	}
+	};
 
 	addOnChangeCallback = (onChangeCallback: Function) => {
 		this.onChangeCallbacks.push(onChangeCallback);
 	};
 
 	setRules(rules: TSynergyRules, customRules: TCustomRules | undefined) {
-		this.rules = generateRules(rules, customRules, this as TFormField);
+		this.rules = generateRules(rules, customRules, this);
 	}
 }
 

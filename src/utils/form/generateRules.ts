@@ -1,5 +1,5 @@
 import { each, map } from "lodash";
-import { TCustomRules, TFormField, TRule } from "~/types";
+import { TCustomRules, TFormField } from "~/types";
 import { Rule } from "~/classes";
 import { validators } from "./validators";
 
@@ -30,7 +30,7 @@ function generateRules(
 			});
 		});
 	}
-	return map(temp, (t) => new Rule(t, field) as TRule);
+	return map(temp, (t) => new Rule(t, field));
 }
 
 export default generateRules;

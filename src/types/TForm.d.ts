@@ -1,13 +1,15 @@
-import { TFormField } from ".";
+import { TFormField, TOptions } from ".";
 
-type TForm = {
+interface TForm {
 	fields: { [key: string]: TFormField };
-	values: Function;
 	errors: Array<{
 		field: string;
 		errors: Array<{ rule: string; error: string }>;
 	}>;
-	initialized: boolean;
-};
+	options: TOptions;
+	onSubmit: Function;
+	isValid: boolean;
+	values: { [key: string]: any };
+}
 
 export default TForm;

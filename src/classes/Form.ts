@@ -3,7 +3,7 @@ import { TFieldProps, TForm, TFormField, TOptions } from "~/types";
 import { FormField } from "~/classes";
 import { computed, makeObservable } from "mobx";
 
-class Form<TEntity> {
+class Form<TEntity> implements TForm {
 	private defaultOptions: TOptions = {
 		formTemplate: "default",
 		clearErrorsOnEmptyForm: false,
@@ -16,11 +16,11 @@ class Form<TEntity> {
 	fields: { [key: string]: TFormField } = {};
 
 	constructor(
-		EntityClass: new () => TEntity,
 		fieldProps: Array<TFieldProps>,
 		onSubmit: Function,
 		options?: TOptions,
-		entity?: TEntity
+		entity?: TEntity,
+		EntityClass?: new () => TEntity
 	) {
 		makeObservable(this, {
 			isValid: computed,
@@ -54,11 +54,11 @@ class Form<TEntity> {
 	}
 
 	private initializeEntity(
-		EntityClass: new () => TEntity,
+		EntityClass: (new () => TEntity) | undefined,
 		entity: TEntity | undefined
 	) {
 		if (isEmpty(this.entity)) {
-			this.entity = new EntityClass();
+			this.entity = EntityClass ? new EntityClass() : {};
 		} else {
 			this.entity = entity;
 		}
@@ -66,12 +66,8 @@ class Form<TEntity> {
 
 	private generateFields() {
 		each(this.fieldProps, (formField: TFieldProps) => {
-			const field = new FormField<TEntity>(
-				formField,
-				this.entity,
-				this as TForm
-			);
-			this.fields[field.name] = field as TFormField;
+			const field = new FormField<TEntity>(formField, this.entity, this);
+			this.fields[field.name] = field;
 		});
 		each(keys(this.fields), (key) => {
 			each(this.fields[key].rules, (rule) => rule.appendDependecyCallbacks());

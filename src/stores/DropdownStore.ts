@@ -1,13 +1,14 @@
 import { filter, find, map, orderBy } from "lodash";
-import { action, computed, makeObservable, observable, toJS } from "mobx";
-import { TDropdownItem, TGetDropdownItemsFunc } from "~/types";
+import { action, computed, makeObservable, observable } from "mobx";
+import { TDropdownItem, TDropdownStore, TGetDropdownItemsFunc } from "~/types";
 import { onOutsideClick } from "~/utils";
 
 type TConfig = {
 	getItems: TGetDropdownItemsFunc;
+	setValue: (value: any) => void;
 };
 
-class DropdownStore {
+class DropdownStore implements TDropdownStore {
 	fetchFunc: TGetDropdownItemsFunc;
 	_items: Array<
 		TDropdownItem & {
@@ -16,8 +17,11 @@ class DropdownStore {
 		}
 	> = [];
 	isOpen: boolean = false;
+	isMulti: boolean = false;
+	ref: any;
+	setValue: (value: any) => void;
 
-	constructor({ getItems }: TConfig) {
+	constructor({ getItems, setValue }: TConfig) {
 		makeObservable(this, {
 			getItems: action,
 			toggleIsOpen: action,
@@ -28,16 +32,20 @@ class DropdownStore {
 			selectedItems: computed,
 			selectedItem: computed,
 		});
+		this.setValue = setValue;
 		this.fetchFunc = getItems;
 		this.getItems();
 	}
 
 	get selectedItem() {
-		return find(this._items, (item) => item.isSelected);
+		return find(this._items, (item) => item.isSelected) as TDropdownItem;
 	}
 
 	get selectedItems() {
-		return filter(this._items, (item) => item.isSelected);
+		return filter(
+			this._items,
+			(item) => item.isSelected
+		) as Array<TDropdownItem>;
 	}
 
 	get items() {
@@ -50,13 +58,16 @@ class DropdownStore {
 			item.isSelected = item.id === id;
 			return item;
 		});
+		this.setIsOpen(this.isMulti);
+		this.setValue(this.isMulti ? this.selectedItems : this.selectedItem);
 	};
 
 	setRef = (ref: HTMLDivElement) => {
 		this.ref = ref;
 		if (!ref) return;
+		// Make this function better and a proper util
 		onOutsideClick(ref, () => {
-			if (this.isOpen) this.toggleIsOpen();
+			this.setIsOpen(false);
 		});
 	};
 
@@ -64,8 +75,12 @@ class DropdownStore {
 		this.isOpen = !this.isOpen;
 	};
 
+	setIsOpen = (isOpen: boolean) => {
+		this.isOpen = isOpen;
+	};
+
 	async getItems() {
-		const result = this.fetchFunc();
+		const result = this.fetchFunc({});
 		if (result instanceof Promise) {
 			try {
 				const response = await result;

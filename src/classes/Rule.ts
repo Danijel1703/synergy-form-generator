@@ -1,5 +1,5 @@
 import { each, isEmpty, isFunction } from "lodash";
-import { TFormField } from "~/types";
+import { TFormField, TRule } from "~/types";
 import { Validator } from ".";
 import { action, makeObservable } from "mobx";
 
@@ -13,7 +13,7 @@ type RuleConfig = {
 	dependencies: Array<string>;
 };
 
-class Rule extends Validator {
+class Rule extends Validator implements TRule {
 	name: string = "";
 	getIsActive: (value: any) => boolean = () => false;
 	dependencies: Array<string> = [];

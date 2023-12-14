@@ -1,8 +1,9 @@
-import { action, makeObservable, observable } from 'mobx';
-import { FunctionComponent } from 'react';
-import inputComponents from '~/components/inputComponents';
+import { action, makeObservable, observable } from "mobx";
+import { FunctionComponent } from "react";
+import inputComponents from "~/components/inputComponents";
+import TMainModule from "./types/TMainModule";
 
-class MainModule {
+class MainModule implements TMainModule {
 	components: { [key: string]: FunctionComponent };
 
 	constructor() {

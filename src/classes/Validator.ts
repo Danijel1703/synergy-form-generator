@@ -1,7 +1,7 @@
 import { action, computed, makeObservable, observable } from "mobx";
-import { TFormField } from "~/types";
+import { TFormField, TValidator } from "~/types";
 
-class Validator {
+class Validator implements TValidator {
 	field: TFormField;
 	validator: (value: any) => {
 		isValid: boolean;

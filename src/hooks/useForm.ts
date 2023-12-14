@@ -2,20 +2,20 @@ import { Form } from "~/classes";
 import { TFieldProps, TOptions } from "~/types";
 
 function useForm<TEntity>({
-  EntityClass,
-  fieldProps,
-  onSubmit,
-  options,
-  entity,
+	EntityClass,
+	fieldProps,
+	onSubmit,
+	options,
+	entity,
 }: {
-  EntityClass: new () => TEntity; //Make an optional param
-  fieldProps: Array<TFieldProps>;
-  onSubmit: Function;
-  options?: TOptions;
-  entity?: TEntity;
+	fieldProps: Array<TFieldProps>;
+	onSubmit: Function;
+	options?: TOptions;
+	entity?: TEntity;
+	EntityClass?: new () => TEntity; //Make an optional param
 }) {
-  const form = new Form(EntityClass, fieldProps, onSubmit, options, entity);
-  return form;
+	const form = new Form(fieldProps, onSubmit, options, entity, EntityClass);
+	return form;
 }
 
 export default useForm;

@@ -1,10 +1,14 @@
-type TValidator = {
+import { TFormField } from ".";
+
+interface TValidator {
+	field: TFormField;
 	validator: (value: any) => {
 		isValid: boolean;
 		error: string | undefined;
 	};
-	error: string | undefined;
-	isValid: boolean;
-};
+	isActive: ((value: any) => boolean) | boolean;
+	_isValid: boolean;
+	_error: string | undefined;
+}
 
 export default TValidator;

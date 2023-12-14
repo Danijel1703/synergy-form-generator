@@ -1,5 +1,5 @@
 type TDropdownItem = {
-	id: string;
+	id: number | string;
 	label: string;
 	value: any;
 };
