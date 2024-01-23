@@ -35,6 +35,7 @@ class Rule extends Validator implements TRule {
 		} else {
 			this.setIsActive(isActive);
 		}
+		this.initialize();
 	}
 
 	setIsActive(isActive: boolean) {

@@ -1,4 +1,11 @@
-import { action, computed, makeObservable, observable } from "mobx";
+import {
+	action,
+	computed,
+	makeObservable,
+	observable,
+	reaction,
+	runInAction,
+} from "mobx";
 import { TFormField, TValidator } from "~/types";
 
 class Validator implements TValidator {
@@ -29,19 +36,38 @@ class Validator implements TValidator {
 		});
 		this.field = field;
 		this.validator = validator;
+		reaction(
+			() => this.value,
+			async (newValue) => {
+				await this.validate(newValue);
+			}
+		);
 	}
 
+	initialize = async () => {
+		await this.validate(this.value);
+	};
+
 	async validate(value: any) {
+		if (!this.isActive) {
+			this._isValid = true;
+			this._error = undefined;
+			return;
+		}
 		const result = this.validator(value);
 		if (result instanceof Promise) {
 			try {
 				const validation = await result;
-				this._isValid = validation.isValid;
-				this._error = validation.error;
+				runInAction(() => {
+					this._isValid = validation.isValid;
+					this._error = validation.error;
+				});
 			} catch (error) {
 				if (error) console.error(error);
-				this._isValid = false;
-				this._error = "Unexpected error ocurred";
+				runInAction(() => {
+					this._isValid = false;
+					this._error = "Unexpected error ocurred";
+				});
 			}
 		} else {
 			this._isValid = result.isValid;
@@ -54,14 +80,10 @@ class Validator implements TValidator {
 	}
 
 	get isValid() {
-		if (!this.isActive) return true;
-		this.validate(this.value);
 		return this._isValid;
 	}
 
 	get error() {
-		if (!this.isActive) return undefined;
-		this.validate(this.value);
 		return this._error;
 	}
 }

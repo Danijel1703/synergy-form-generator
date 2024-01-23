@@ -1,23 +1,14 @@
 import "styles/User.Module.css";
 import { useForm } from "~/hooks";
 import { UserCreateModel } from "~/models";
-import { Submit } from "~/components";
-import { fieldTypeConstants } from "~/constants";
+import { FormGenerator, Submit } from "~/components";
 import Field from "~/components/Field";
+import { UserCreateFields } from "~/form-fields";
 
 const UserCreatePage = () => {
 	const form = useForm<UserCreateModel>({
 		onSubmit: () => {},
-		fieldProps: [
-			{
-				name: "username",
-				label: "Username",
-				type: fieldTypeConstants.text,
-				rules: {
-					required: true,
-				},
-			},
-		],
+		fieldProps: UserCreateFields,
 		EntityClass: UserCreateModel,
 	});
 	const { fields } = form;
@@ -49,6 +40,7 @@ const UserCreatePage = () => {
 					)}
 				/>
 			</div>
+			<FormGenerator fields={form.fields} onSubmit={form.onSubmit} />
 		</div>
 	);
 };

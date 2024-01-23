@@ -17,17 +17,23 @@ class DropdownStore implements TDropdownStore {
 		}
 	> = [];
 	isOpen: boolean = false;
-	isMulti: boolean = false;
-	ref: any;
+	isMulti: boolean = true;
+	ref!: HTMLDivElement;
+	inputRef!: HTMLDivElement;
+	itemsRef!: HTMLDivElement;
 	setValue: (value: any) => void;
+	itemsWidth: number = 0;
 
 	constructor({ getItems, setValue }: TConfig) {
 		makeObservable(this, {
 			getItems: action,
 			toggleIsOpen: action,
 			selectItem: action,
+			deselectItem: action,
+			setItemsWidth: action,
 			_items: observable,
 			isOpen: observable,
+			itemsWidth: observable,
 			items: computed,
 			selectedItems: computed,
 			selectedItem: computed,
@@ -53,13 +59,26 @@ class DropdownStore implements TDropdownStore {
 		return orderBy(items, "orderNumber");
 	}
 
-	selectItem = (id: string) => {
+	selectItem = (id: string | number) => {
 		this._items = map(this._items, (item) => {
-			item.isSelected = item.id === id;
+			if (!this.isMulti) {
+				item.isSelected = item.id === id;
+			} else {
+				item.isSelected = item.isSelected || item.id === id;
+			}
 			return item;
 		});
 		this.setIsOpen(this.isMulti);
 		this.setValue(this.isMulti ? this.selectedItems : this.selectedItem);
+	};
+
+	deselectItem = (id: string | number) => {
+		this._items = map(this._items, (item) => {
+			if (item.id === id) {
+				item.isSelected = false;
+			}
+			return item;
+		});
 	};
 
 	setRef = (ref: HTMLDivElement) => {
@@ -71,7 +90,18 @@ class DropdownStore implements TDropdownStore {
 		});
 	};
 
-	toggleIsOpen = () => {
+	setInputRef = (ref: HTMLDivElement) => {
+		this.inputRef = ref;
+	};
+
+	setItemsRef = (ref: HTMLDivElement) => {
+		if (!ref) return;
+		this.itemsRef = ref;
+		this.setItemsWidth(this.inputRef.offsetWidth);
+	};
+
+	toggleIsOpen = (e: Event) => {
+		if (this.inputRef !== e.target) return;
 		this.isOpen = !this.isOpen;
 	};
 
@@ -97,6 +127,10 @@ class DropdownStore implements TDropdownStore {
 			return value;
 		});
 	}
+
+	setItemsWidth = (width: number) => {
+		this.itemsWidth = width;
+	};
 }
 
 export default DropdownStore;

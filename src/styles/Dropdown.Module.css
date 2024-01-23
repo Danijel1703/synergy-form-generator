@@ -4,14 +4,13 @@
 .dropdown--input {
 	position: relative;
 	background-color: grey;
-	width: 10em;
 	border: 1px solid black;
+	display: flex;
 }
 
 .dropdown--items {
 	position: absolute;
 	border: 1px solid black;
-	width: 10em;
 }
 
 .dropdown--items--item:hover {
