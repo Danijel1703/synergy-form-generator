@@ -12,7 +12,7 @@ function useForm<TEntity>({
 	onSubmit: Function;
 	options?: TOptions;
 	entity?: TEntity;
-	EntityClass?: new () => TEntity; //Make an optional param
+	EntityClass?: new () => TEntity;
 }) {
 	const form = new Form(fieldProps, onSubmit, options, entity, EntityClass);
 	return form;

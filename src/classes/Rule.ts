@@ -15,7 +15,7 @@ type RuleConfig = {
 
 class Rule extends Validator implements TRule {
 	name: string = "";
-	getIsActive: (value: any) => boolean = () => false;
+	getIsActive: (value: any) => boolean = () => true;
 	dependencies: Array<string> = [];
 
 	constructor(

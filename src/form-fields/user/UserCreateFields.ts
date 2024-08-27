@@ -9,6 +9,7 @@ const UserCreateFields: Array<TFieldProps> = [
 		type: fieldTypeConstants.text,
 		rules: {
 			required: true,
+			mustContainUpper: true,
 		},
 	},
 	{
