@@ -1,7 +1,7 @@
 import { each, map } from "lodash";
 import { TCustomRules, TFormField } from "~/types";
 import { Rule } from "~/classes";
-import { validators } from "./validators";
+import MainModule from "~/main";
 
 function generateRules(
 	rules: TSynergyRules,
@@ -13,7 +13,7 @@ function generateRules(
 		temp.push({
 			name: key,
 			isActive: value,
-			validator: validators[key] as (values: any) => {
+			validator: MainModule.validators[key] as (values: any) => {
 				isValid: boolean;
 				error: string | undefined;
 			},

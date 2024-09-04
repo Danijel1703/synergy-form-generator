@@ -1,16 +1,36 @@
 import { FunctionComponent } from "react";
-import { TCustomRules, TRule } from ".";
+import { TFieldComponentType, TSynergyFieldComponent, TSynergyRule } from ".";
 
 interface TMainModule {
-	setComponents: (components: { [key: string]: FunctionComponent }) => void;
-	replaceComponent: ({
-		name,
-		component,
-	}: {
-		name: string;
-		component: FunctionComponent;
+	setComponents: (components: {
+		[key: string]: TSynergyFieldComponent;
 	}) => void;
-	rules: Array<TCustomRules>;
+	replaceRule: ({
+		name,
+		validator,
+	}: {
+		name: TSynergyRule;
+		validator: (values: any) => { isValid: boolean; error: string | undefined };
+	}) => void;
+	setRules: (
+		rules: Array<{
+			name: TSynergyRule;
+			validator: (values: any) => {
+				isValid: boolean;
+				error: string | undefined;
+			};
+		}>
+	) => void;
+	replaceComponent: (
+		name: TFieldComponentType,
+		component: FunctionComponent
+	) => void;
+	validators: {
+		[key: TSynergyRule]: (values: any) => {
+			isValid: boolean;
+			error: string | undefined;
+		};
+	};
 }
 
 export default TMainModule;

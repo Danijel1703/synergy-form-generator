@@ -1,33 +1,40 @@
 import { map } from "lodash";
 import { observer } from "mobx-react";
-import { TFieldComponentProps, TFormField } from "~/types";
+import { TFieldComponentProps, TForm, TFormField } from "~/types";
 
 type Props = {
 	fields: { [key: string]: TFormField };
-	onSubmit: () => void;
+	onSubmit: Function;
 	className?: string;
-	isValid: boolean;
+	form: TForm;
 };
 
 function FormGenerator(props: Props) {
-	const { fields, onSubmit, className, isValid } = props;
+	const { onSubmit, className, form } = props;
+	const { fields, isValid } = form;
 
 	return (
-		<form className={`col ${className}`}>
+		<form
+			className={`col ${className}`}
+			onSubmit={(e) => {
+				e.preventDefault();
+				onSubmit(form.values);
+			}}
+		>
 			{map(fields, (formField) => (
 				<RenderComponent
 					key={formField.id}
 					formField={formField as TFieldComponentProps & TFormField}
 				/>
 			))}
-			<Submit onSubmit={onSubmit} isValid={isValid} />
+			<Submit onSubmit={onSubmit} isValid={isValid} form={form} />
 		</form>
 	);
 }
 
 const Submit = observer(
-	({ isValid, onSubmit }: { isValid: boolean; onSubmit: () => void }) => {
-		return <input type="button" disabled={!isValid} onClick={onSubmit} />;
+	({ isValid }: { isValid: boolean; onSubmit: Function; form: TForm }) => {
+		return <input type="submit" disabled={!isValid} />;
 	}
 );
 
@@ -43,12 +50,18 @@ const RenderComponent = observer(
 			disabled,
 			error,
 			dropdownStore,
+			type,
+			isValid,
+			items,
 		} = formField;
 		const Component = formField.component;
 		return (
 			<Component
+				items={items}
+				isValid={isValid}
 				key={formField.name}
 				placeholder={placeholder}
+				type={type}
 				label={label}
 				value={value}
 				onChange={onChange}

@@ -1,135 +1,98 @@
-import { filter, find, map, orderBy } from "lodash";
+import { each, filter, find, isEmpty, isFunction, map } from "lodash";
 import { action, computed, makeObservable, observable } from "mobx";
-import { TDropdownItem, TDropdownStore, TGetDropdownItemsFunc } from "~/types";
-import { onOutsideClick } from "~/utils";
+import {
+	TDropdownStore,
+	TGeTSelectableItemsFunc,
+	TSelectableItem,
+} from "~/types";
 
 type TConfig = {
-	getItems: TGetDropdownItemsFunc;
+	getItems?: TGeTSelectableItemsFunc;
 	setValue: (value: any) => void;
+	items?: Array<TSelectableItem>;
 };
 
 class DropdownStore implements TDropdownStore {
-	fetchFunc: TGetDropdownItemsFunc;
+	fetchFunc: TGeTSelectableItemsFunc = () => [];
 	_items: Array<
-		TDropdownItem & {
+		TSelectableItem & {
 			isSelected?: boolean;
-			orderNumber?: number;
 		}
 	> = [];
-	isOpen: boolean = false;
 	isMulti: boolean = true;
-	ref!: HTMLDivElement;
-	inputRef!: HTMLDivElement;
-	itemsRef!: HTMLDivElement;
 	setValue: (value: any) => void;
 	itemsWidth: number = 0;
 
-	constructor({ getItems, setValue }: TConfig) {
+	constructor({ getItems, setValue, items = [] }: TConfig) {
 		makeObservable(this, {
-			getItems: action,
-			toggleIsOpen: action,
 			selectItem: action,
-			deselectItem: action,
-			setItemsWidth: action,
+			selectItems: action,
+			setItems: action,
+
 			_items: observable,
-			isOpen: observable,
-			itemsWidth: observable,
+
 			items: computed,
 			selectedItems: computed,
 			selectedItem: computed,
 		});
 		this.setValue = setValue;
-		this.fetchFunc = getItems;
-		this.getItems();
+		if (isFunction(getItems)) {
+			this.fetchFunc = getItems;
+		}
+		if (isEmpty(items)) {
+			this.getItems();
+		} else {
+			this.setItems(items);
+		}
 	}
 
 	get selectedItem() {
-		return find(this._items, (item) => item.isSelected) as TDropdownItem;
+		return find(this._items, (item) => item.isSelected) as TSelectableItem;
 	}
 
 	get selectedItems() {
 		return filter(
 			this._items,
 			(item) => item.isSelected
-		) as Array<TDropdownItem>;
+		) as Array<TSelectableItem>;
 	}
 
 	get items() {
 		const items = filter(this._items, (item) => !item.isSelected);
-		return orderBy(items, "orderNumber");
+		return items;
 	}
 
-	selectItem = (id: string | number) => {
+	selectItem = ({ id }: TSelectableItem) => {
 		this._items = map(this._items, (item) => {
-			if (!this.isMulti) {
-				item.isSelected = item.id === id;
-			} else {
-				item.isSelected = item.isSelected || item.id === id;
-			}
+			item.isSelected = item.id === id;
 			return item;
 		});
-		this.setIsOpen(this.isMulti);
 		this.setValue(this.isMulti ? this.selectedItems : this.selectedItem);
 	};
 
-	deselectItem = (id: string | number) => {
-		this._items = map(this._items, (item) => {
-			if (item.id === id) {
-				item.isSelected = false;
-			}
-			return item;
-		});
+	selectItems = (items: Array<TSelectableItem>) => {
+		if (isEmpty(items)) each(this._items, (i) => (i.isSelected = false));
+		each(items, (item) => this.selectItem(item));
 	};
 
-	setRef = (ref: HTMLDivElement) => {
-		this.ref = ref;
-		if (!ref) return;
-		// Make this function better and a proper util
-		onOutsideClick(ref, () => {
-			this.setIsOpen(false);
-		});
-	};
+	setItems(items: Array<TSelectableItem>) {
+		this._items = items;
+	}
 
-	setInputRef = (ref: HTMLDivElement) => {
-		this.inputRef = ref;
-	};
-
-	setItemsRef = (ref: HTMLDivElement) => {
-		if (!ref) return;
-		this.itemsRef = ref;
-		this.setItemsWidth(this.inputRef.offsetWidth);
-	};
-
-	toggleIsOpen = (e: Event) => {
-		if (this.inputRef !== e.target) return;
-		this.isOpen = !this.isOpen;
-	};
-
-	setIsOpen = (isOpen: boolean) => {
-		this.isOpen = isOpen;
-	};
-
-	async getItems() {
+	getItems = async () => {
+		//TODO: Implement actual fetching results with filtering
 		const result = this.fetchFunc({});
 		if (result instanceof Promise) {
 			try {
 				const response = await result;
-				this._items = response;
+				this.setItems(response);
 			} catch (error) {
 				if (error) console.error(error);
-				this._items = [];
+				this.setItems([]);
 			}
 		} else {
-			this._items = result;
+			this.setItems(result);
 		}
-		this._items = map(this._items, (value, index) => {
-			value.orderNumber = index;
-			return value;
-		});
-	}
-
-	setItemsWidth = (width: number) => {
-		this.itemsWidth = width;
 	};
 }
 

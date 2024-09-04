@@ -5,6 +5,8 @@ interface TRule {
 	error: string | undefined;
 	dependencies: Array<string>;
 	appendDependecyCallbacks: Function;
+	clearError: () => void;
+	validate: (value: any) => Promise<void>;
 }
 
 export default TRule;

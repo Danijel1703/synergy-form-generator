@@ -1,7 +1,7 @@
 import { Form } from "~/classes";
 import { TFieldProps, TOptions } from "~/types";
 
-function useForm<TEntity>({
+function createForm<TEntity>({
 	EntityClass,
 	fieldProps,
 	onSubmit,
@@ -18,4 +18,4 @@ function useForm<TEntity>({
 	return form;
 }
 
-export default useForm;
+export default createForm;

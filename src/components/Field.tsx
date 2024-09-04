@@ -1,9 +1,9 @@
 import { observer } from "mobx-react";
-import { useEffect } from "react";
+import { FunctionComponent, useEffect } from "react";
 import { TFormField } from "~/types";
 
 type Props = {
-	component: JSX.Element | JSX.Element[] | (() => JSX.Element);
+	component: FunctionComponent;
 	field: TFormField;
 };
 

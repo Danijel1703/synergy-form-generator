@@ -1,4 +1,4 @@
-import { each, every, isEmpty, keys, map } from "lodash";
+import { each, every, isEmpty, keys, map, some } from "lodash";
 import { TFieldProps, TForm, TFormField, TOptions } from "~/types";
 import { FormField } from "~/classes";
 import { computed, makeObservable } from "mobx";
@@ -6,11 +6,11 @@ import { computed, makeObservable } from "mobx";
 class Form<TEntity> implements TForm {
 	private defaultOptions: TOptions = {
 		formTemplate: "default",
-		clearErrorsOnEmptyForm: false,
+		clearInitialErrors: true,
 	};
-	private entity: TEntity | any;
 	private fieldProps: Array<TFieldProps>;
 
+	entity: TEntity | any;
 	options: TOptions = this.defaultOptions;
 	onSubmit: Function;
 	fields: { [key: string]: TFormField } = {};
@@ -32,6 +32,10 @@ class Form<TEntity> implements TForm {
 		this.options = { ...this.defaultOptions, ...options };
 		this.onSubmit = onSubmit;
 		this.generateFields();
+	}
+
+	hasChanged() {
+		return some(keys(this.fields), (key) => this.fields[key].hasChanged());
 	}
 
 	get isValid() {
@@ -73,7 +77,23 @@ class Form<TEntity> implements TForm {
 			each(this.fields[key].rules, (rule) => rule.appendDependecyCallbacks());
 			Object.freeze(this.fields[key]);
 		});
+		if (this.options.clearInitialErrors) this.clearErrors();
 	}
+
+	clearErrors() {
+		each(keys(this.fields), (key) =>
+			each(this.fields[key].rules, (rule) => rule.clearError())
+		);
+	}
+
+	addField = (field: TFormField) => {
+		this.fields[field.name] = field;
+		each(this.fields[field.name].rules, (rule) => {
+			rule.appendDependecyCallbacks();
+			rule.clearError();
+		});
+		Object.freeze(this.fields[field.name]);
+	};
 }
 
 export default Form;

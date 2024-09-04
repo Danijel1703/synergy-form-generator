@@ -1,13 +1,19 @@
-import { TDropdownStore, TForm, TRule } from ".";
-import { FunctionComponent } from "react";
+import { ChangeEventHandler } from "react";
+import {
+	TDropdownStore,
+	TForm,
+	TRule,
+	TSelectableItem,
+	TSynergyFieldComponent,
+} from ".";
 
 interface TFormField {
 	name: string;
 	label: string;
 	type: string;
 	value: string | number | undefined;
-	onChange: Function;
-	component: FunctionComponent;
+	onChange: ChangeEventHandler<HTMLInputElement>;
+	component: TSynergyFieldComponent;
 	className?: string;
 	id: string;
 	addOnChangeCallback: (func: Function) => void;
@@ -19,6 +25,8 @@ interface TFormField {
 	errors: Array<{ error: string; rule: string }>;
 	dropdownStore?: TDropdownStore;
 	hideField?: boolean;
+	items?: Array<TSelectableItem>;
+	hasChanged: () => boolean;
 }
 
 export default TFormField;

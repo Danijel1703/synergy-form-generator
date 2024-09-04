@@ -1,7 +1,7 @@
 import { each, isEmpty, isFunction } from "lodash";
+import { action, makeObservable } from "mobx";
 import { TFormField, TRule } from "~/types";
 import { Validator } from ".";
-import { action, makeObservable } from "mobx";
 
 type RuleConfig = {
 	name: string;
@@ -54,7 +54,7 @@ class Rule extends Validator implements TRule {
 			const dependencyField = this.field.form.fields[dependency] as TFormField;
 			dependencyField.addOnChangeCallback(() => {
 				this.setIsActive(this.getIsActive(this.field.form.values));
-				this.validate(this.value);
+				this.validate();
 			});
 		});
 	}

@@ -1,6 +1,13 @@
-function mustContainUpper(value: string) {
-	const isValid = /[A-Z]/.test(value);
-	const error = !isValid ? "Input must contain upper case letter" : undefined;
-	return { isValid, error: error };
+import { TFormField } from "~/types";
+import getError from "../getError";
+import { ruleConstants } from "~/constants";
+
+function mustContainUpper(field: TFormField) {
+	const { value } = field;
+	const isValid = /[A-Z]/.test(value as string);
+	return {
+		isValid,
+		error: getError(field, ruleConstants.mustContainUpper, isValid),
+	};
 }
 export default mustContainUpper;

@@ -1,3 +1,4 @@
+import { FormEventHandler } from "react";
 import { TFormField, TOptions } from ".";
 
 interface TForm {
@@ -10,6 +11,9 @@ interface TForm {
 	onSubmit: Function;
 	isValid: boolean;
 	values: { [key: string]: any };
+	entity: any;
+	addField: (field: TFormField) => void;
+	hasChanged: () => boolean;
 }
 
 export default TForm;

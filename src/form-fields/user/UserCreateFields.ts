@@ -1,6 +1,6 @@
-import { includes, isEmpty } from "lodash";
+import { isEmpty } from "lodash";
 import { fieldTypeConstants } from "~/constants";
-import { TFieldProps } from "~/types";
+import { TFieldProps, TSelectableItem } from "~/types";
 
 const UserCreateFields: Array<TFieldProps> = [
 	{
@@ -32,29 +32,6 @@ const UserCreateFields: Array<TFieldProps> = [
 		},
 	},
 	{
-		name: "email",
-		label: "Email",
-		type: fieldTypeConstants.text,
-		rules: {
-			required: true,
-		},
-		customRules: [
-			{
-				name: "someCustomRule",
-				isActive: (values: any) => {
-					return !isEmpty(values.username) && !isEmpty(values.password);
-				},
-				validator: (value: any) => {
-					if (!includes(value, "b")) {
-						return { isValid: false, error: "OVO JE NEKI ERROR" };
-					} else {
-						return { isValid: true, error: undefined };
-					}
-				},
-			},
-		],
-	},
-	{
 		name: "confirmedEmail",
 		label: "Confirmed Email",
 		type: fieldTypeConstants.text,
@@ -74,7 +51,38 @@ const UserCreateFields: Array<TFieldProps> = [
 		name: "role",
 		label: "Role",
 		type: fieldTypeConstants.dropdown,
-		getItems: () => [
+		getItems: () =>
+			new Promise<Array<TSelectableItem>>((resolve, reject) =>
+				setTimeout(() => {
+					resolve([
+						{ id: 1, value: "first", label: "First" },
+						{ id: 2, value: "second", label: "Second" },
+						{ id: 3, value: "third", label: "Third" },
+					]);
+				}, 2000)
+			),
+		rules: {
+			required: true,
+		},
+	},
+	{
+		name: "penis",
+		label: "penis",
+		type: fieldTypeConstants.radio,
+		items: [
+			{ id: 1, value: "first", label: "First" },
+			{ id: 2, value: "second", label: "Second" },
+			{ id: 3, value: "third", label: "Third" },
+		],
+		rules: {
+			required: true,
+		},
+	},
+	{
+		name: "penis2",
+		label: "penis2",
+		type: fieldTypeConstants.checkbox,
+		items: [
 			{ id: 1, value: "first", label: "First" },
 			{ id: 2, value: "second", label: "Second" },
 			{ id: 3, value: "third", label: "Third" },

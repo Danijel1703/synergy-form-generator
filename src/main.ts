@@ -1,35 +1,59 @@
-import { action, makeObservable, observable } from "mobx";
-import { FunctionComponent } from "react";
+import { each, isEmpty, isFunction } from "lodash";
 import inputComponents from "~/components/inputComponents";
+import {
+	TFieldComponentType,
+	TSynergyFieldComponent,
+	TSynergyRule,
+} from "./types";
 import TMainModule from "./types/TMainModule";
-import { TCustomRules } from "./types";
+import { validators } from "./utils/form/validators";
 
 class MainModule implements TMainModule {
-	components: { [key: string]: FunctionComponent };
-	rules: Array<TCustomRules> = [];
+	components: { [key: string]: TSynergyFieldComponent };
+	validators: {
+		[key: TSynergyRule]: (values: any) => {
+			isValid: boolean;
+			error: string | undefined;
+		};
+	} = {};
 
 	constructor() {
 		this.components = inputComponents;
-		makeObservable(this, {
-			setComponents: action,
-			replaceComponent: action,
-			components: observable,
+		this.validators = validators;
+	}
+
+	setComponents(components: { [key: string]: TSynergyFieldComponent }) {
+		this.components = components;
+		each(inputComponents, (value, key) => {
+			if (!isFunction(this.components[key])) this.components[key] = value;
 		});
 	}
 
-	setComponents(components: { [key: string]: FunctionComponent }) {
-		this.components = components;
+	replaceRule({
+		name,
+		validator,
+	}: {
+		name: TSynergyRule;
+		validator: (values: any) => { isValid: boolean; error: string | undefined };
+	}) {
+		this.validators[name] = validator;
 	}
 
-	setRules(rules: TCustomRules) {}
+	setRules = (
+		rules: Array<{
+			name: TSynergyRule;
+			validator: (values: any) => {
+				isValid: boolean;
+				error: string | undefined;
+			};
+		}>
+	) =>
+		each(rules, ({ name, validator }) => (this.validators[name] = validator));
 
-	replaceComponent({
-		name,
-		component,
-	}: {
-		name: string;
-		component: FunctionComponent;
-	}) {
+	replaceComponent(
+		name: TFieldComponentType,
+		component: TSynergyFieldComponent
+	) {
 		this.components[name] = component;
 	}
 }

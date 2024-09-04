@@ -10,7 +10,7 @@ import { TFormField, TValidator } from "~/types";
 
 class Validator implements TValidator {
 	field: TFormField;
-	validator: (value: any) => {
+	validator: (field: TFormField) => {
 		isValid: boolean;
 		error: string | undefined;
 	};
@@ -19,7 +19,7 @@ class Validator implements TValidator {
 	_error: string | undefined;
 
 	constructor(
-		validator: (value: any) => {
+		validator: (field: TFormField) => {
 			isValid: boolean;
 			error: string | undefined;
 		},
@@ -29,32 +29,38 @@ class Validator implements TValidator {
 			value: computed,
 			error: computed,
 			isValid: computed,
-			validate: action,
 			_isValid: observable,
 			_error: observable,
 			isActive: observable,
+			clearError: action,
 		});
 		this.field = field;
 		this.validator = validator;
 		reaction(
 			() => this.value,
-			async (newValue) => {
-				await this.validate(newValue);
+			async () => {
+				await this.validate();
 			}
 		);
 	}
 
+	clearError() {
+		this._error = undefined;
+	}
+
 	initialize = async () => {
-		await this.validate(this.value);
+		await this.validate();
 	};
 
-	async validate(value: any) {
+	async validate() {
 		if (!this.isActive) {
-			this._isValid = true;
-			this._error = undefined;
+			runInAction(() => {
+				this._isValid = true;
+				this._error = undefined;
+			});
 			return;
 		}
-		const result = this.validator(value);
+		const result = this.validator(this.field);
 		if (result instanceof Promise) {
 			try {
 				const validation = await result;
@@ -70,8 +76,10 @@ class Validator implements TValidator {
 				});
 			}
 		} else {
-			this._isValid = result.isValid;
-			this._error = result.error;
+			runInAction(() => {
+				this._isValid = result.isValid;
+				this._error = result.error;
+			});
 		}
 	}
 

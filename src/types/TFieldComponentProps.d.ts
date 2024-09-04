@@ -1,4 +1,4 @@
-import { TDropdownStore } from ".";
+import { TDropdownStore, TFieldComponentType } from ".";
 
 type TFieldComponentProps = {
 	onChange: () => void;
@@ -12,6 +12,7 @@ type TFieldComponentProps = {
 	disabled: boolean;
 	items?: Array<{ id: string; value: any; label: string }>;
 	dropdownStore?: TDropdownStore;
+	type: TFieldComponentType;
 };
 
 export default TFieldComponentProps;
