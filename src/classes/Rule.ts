@@ -11,6 +11,7 @@ type RuleConfig = {
 	};
 	isActive: boolean | ((values: any) => boolean);
 	dependencies: Array<string>;
+	compareValue: RegExp | number | string | Array<any>;
 };
 
 class Rule extends Validator implements TRule {
@@ -19,10 +20,10 @@ class Rule extends Validator implements TRule {
 	dependencies: Array<string> = [];
 
 	constructor(
-		{ name, isActive, validator, dependencies }: RuleConfig,
+		{ name, isActive, validator, dependencies, compareValue }: RuleConfig,
 		field: TFormField
 	) {
-		super(validator, field);
+		super(validator, compareValue, field);
 		this.name = name;
 		this.dependencies = dependencies;
 		makeObservable(this, {

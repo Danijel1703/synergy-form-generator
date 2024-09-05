@@ -6,6 +6,7 @@ import {
 	EmailInput,
 	FileInput,
 	MonthInput,
+	NumberInput,
 	PasswordInput,
 	PhoneInput,
 	RadioInput,
@@ -31,6 +32,7 @@ const inputComponents: { [key: string]: TSynergyFieldComponent } = {
 	radio: RadioInput,
 	checkbox: CheckboxInput,
 	date: DateInput,
+	number: NumberInput,
 };
 
 export default inputComponents;

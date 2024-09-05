@@ -7,6 +7,22 @@ type TSynergyRule =
 	| "mustContainSpecial"
 	| "decimal"
 	| "upperCaseOnly"
-	| "lowerCaseOnly";
+	| "lowerCaseOnly"
+	| "mustContainDigit"
+	| "noWhitespace"
+	| "mustStartWith"
+	| "mustEndWith"
+	| "notContain"
+	| "length"
+	| "exactLength"
+	| "isEmail"
+	| "isURL"
+	| "isAlphanumeric"
+	| "isNumeric"
+	| "isUUID"
+	| "isHexadecimal"
+	| "isBase64"
+	| "isIn"
+	| "notIn";
 
 export default TSynergyRule;

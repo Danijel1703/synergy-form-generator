@@ -7,6 +7,7 @@ import {
 } from "./types";
 import TMainModule from "./types/TMainModule";
 import { validators } from "./utils/form/validators";
+import { errorConstants } from "./constants";
 
 class MainModule implements TMainModule {
 	components: { [key: string]: TSynergyFieldComponent };
@@ -16,6 +17,7 @@ class MainModule implements TMainModule {
 			error: string | undefined;
 		};
 	} = {};
+	errorConstants: { [key: string]: string } = errorConstants;
 
 	constructor() {
 		this.components = inputComponents;
@@ -28,6 +30,10 @@ class MainModule implements TMainModule {
 			if (!isFunction(this.components[key])) this.components[key] = value;
 		});
 	}
+
+	replaceError = (name: TSynergyRule, error: string) => {
+		this.errorConstants[name] = error;
+	};
 
 	replaceRule({
 		name,

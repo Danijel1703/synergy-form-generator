@@ -31,6 +31,7 @@ interface TMainModule {
 			error: string | undefined;
 		};
 	};
+	errorConstants: { [key: string]: string };
 }
 
 export default TMainModule;

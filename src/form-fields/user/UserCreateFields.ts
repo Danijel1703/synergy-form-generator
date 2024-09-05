@@ -10,6 +10,7 @@ const UserCreateFields: Array<TFieldProps> = [
 		rules: {
 			required: true,
 			mustContainUpper: true,
+			mustContainLower: true,
 		},
 	},
 	{
@@ -66,29 +67,15 @@ const UserCreateFields: Array<TFieldProps> = [
 		},
 	},
 	{
-		name: "penis",
-		label: "penis",
-		type: fieldTypeConstants.radio,
-		items: [
-			{ id: 1, value: "first", label: "First" },
-			{ id: 2, value: "second", label: "Second" },
-			{ id: 3, value: "third", label: "Third" },
-		],
-		rules: {
-			required: true,
-		},
-	},
-	{
 		name: "penis2",
 		label: "penis2",
-		type: fieldTypeConstants.checkbox,
-		items: [
-			{ id: 1, value: "first", label: "First" },
-			{ id: 2, value: "second", label: "Second" },
-			{ id: 3, value: "third", label: "Third" },
-		],
+		type: fieldTypeConstants.number,
 		rules: {
-			required: true,
+			min: 5,
+			max: {
+				isActive: true,
+				value: 8,
+			},
 		},
 	},
 ];

@@ -15,3 +15,4 @@ export { default as UrlInput } from "./inputs/UrlInput";
 export { default as WeekInput } from "./inputs/WeekInput";
 export { default as RadioInput } from "./inputs/RadioInput";
 export { default as DateInput } from "./inputs/DateInput";
+export { default as NumberInput } from "./inputs/NumberInput";

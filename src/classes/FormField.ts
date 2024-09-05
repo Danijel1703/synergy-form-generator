@@ -119,12 +119,6 @@ class FormField<TEntity> implements TFormField {
 		this.items = items;
 	}
 
-	async validate() {
-		for (let i = 0; i <= this.rules.length; i++) {
-			await this.rules[i].validate(this.value);
-		}
-	}
-
 	private initialize() {
 		this._component = this.customComponent || MainModule.components[this.type];
 		switch (this.type) {
