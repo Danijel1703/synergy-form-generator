@@ -1,6 +1,9 @@
 import { observer } from "mobx-react";
 import Select from "react-select";
-import { TDropdownStore, TSynergyFieldComponent } from "~/types";
+import {
+	TDropdownStore,
+	TSynergyFieldComponent,
+} from "synergy-form-generator/types";
 
 function DropdownInput({ dropdownStore }: { dropdownStore: TDropdownStore }) {
 	const { isMulti, getItems, items, selectItem, selectItems } = dropdownStore;

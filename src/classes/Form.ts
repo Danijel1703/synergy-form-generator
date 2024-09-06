@@ -1,11 +1,15 @@
 import { each, every, isEmpty, keys, map, some } from "lodash";
-import { TFieldProps, TForm, TFormField, TOptions } from "~/types";
-import { FormField } from "~/classes";
+import {
+	TFieldProps,
+	TForm,
+	TFormField,
+	TOptions,
+} from "synergy-form-generator/types";
+import { FormField } from "synergy-form-generator/classes";
 import { computed, makeObservable } from "mobx";
 
 class Form<TEntity> implements TForm {
 	private defaultOptions: TOptions = {
-		formTemplate: "default",
 		clearInitialErrors: true,
 	};
 	private fieldProps: Array<TFieldProps>;
@@ -79,6 +83,14 @@ class Form<TEntity> implements TForm {
 		});
 		if (this.options.clearInitialErrors) this.clearErrors();
 	}
+
+	clear = () => each(this.fields, (field) => field.clear());
+
+	reset = () => each(this.fields, (field) => field.reset());
+
+	disable = () => each(this.fields, (field) => field.disable());
+
+	enable = () => each(this.fields, (field) => field.enable());
 
 	clearErrors() {
 		each(keys(this.fields), (key) =>

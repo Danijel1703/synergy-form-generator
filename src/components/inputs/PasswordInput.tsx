@@ -1,5 +1,5 @@
 import { observer } from "mobx-react";
-import { TFieldComponentProps } from "~/types";
+import { TFieldComponentProps } from "synergy-form-generator/types";
 import BaseInput from "./BaseInput";
 
 function PasswordInput(props: TFieldComponentProps) {

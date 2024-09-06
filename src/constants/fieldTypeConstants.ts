@@ -1,4 +1,4 @@
-import { TFieldComponentType } from "~/types";
+import { TFieldComponentType } from "synergy-form-generator/types";
 
 const fieldTypeConstants = {
 	text: "text",

@@ -4,7 +4,7 @@ import {
 	TDropdownStore,
 	TGeTSelectableItemsFunc,
 	TSelectableItem,
-} from "~/types";
+} from "synergy-form-generator/types";
 
 type TConfig = {
 	getItems?: TGeTSelectableItemsFunc;

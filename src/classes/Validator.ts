@@ -6,8 +6,8 @@ import {
 	reaction,
 	runInAction,
 } from "mobx";
-import { errorConstants } from "~/constants";
-import { TFormField, TValidator } from "~/types";
+import { errorConstants } from "synergy-form-generator/constants";
+import { TFormField, TValidator } from "synergy-form-generator/types";
 
 class Validator implements TValidator {
 	field: TFormField;

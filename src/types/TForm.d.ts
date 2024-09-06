@@ -1,4 +1,3 @@
-import { FormEventHandler } from "react";
 import { TFormField, TOptions } from ".";
 
 interface TForm {
@@ -14,6 +13,10 @@ interface TForm {
 	entity: any;
 	addField: (field: TFormField) => void;
 	hasChanged: () => boolean;
+	clear: () => void;
+	reset: () => void;
+	disable: () => void;
+	enable: () => void;
 }
 
 export default TForm;

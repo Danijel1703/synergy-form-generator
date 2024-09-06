@@ -1,6 +1,6 @@
 import { each, isEmpty, isFunction } from "lodash";
 import { action, makeObservable } from "mobx";
-import { TFormField, TRule } from "~/types";
+import { TFormField, TRule } from "synergy-form-generator/types";
 import { Validator } from ".";
 
 type RuleConfig = {

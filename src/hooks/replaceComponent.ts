@@ -1,5 +1,8 @@
-import MainModule from "~/main";
-import { TFieldComponentType, TSynergyFieldComponent } from "~/types";
+import MainModule from "synergy-form-generator/MainModule";
+import {
+	TFieldComponentType,
+	TSynergyFieldComponent,
+} from "synergy-form-generator/types";
 
 const replaceComponent = (
 	name: TFieldComponentType,

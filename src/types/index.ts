@@ -1,5 +1,3 @@
-export type { default as TUser } from "./user/TUser";
-export type { default as TUserCreate } from "./user/TUserCreate";
 export type { default as TFormField } from "./TFormField";
 export type { default as TFieldProps } from "./TFieldProps";
 export type { default as TFieldComponentProps } from "./TFieldComponentProps";
@@ -14,3 +12,4 @@ export type { default as TDropdownStore } from "./TDropdownStore";
 export type { default as TFieldComponentType } from "./TFieldComponentType";
 export type { default as TSynergyRule } from "./TSynergyRule";
 export type { default as TSynergyFieldComponent } from "./TSynergyFieldComponent";
+export type { default as TSynergyRules } from "./TSynergyRules";

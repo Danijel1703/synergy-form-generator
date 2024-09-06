@@ -26,7 +26,10 @@ interface TMainModule {
 		component: FunctionComponent
 	) => void;
 	validators: {
-		[key: TSynergyRule]: (values: any) => {
+		[key: string]: (
+			values: any,
+			compareValue: any
+		) => {
 			isValid: boolean;
 			error: string | undefined;
 		};

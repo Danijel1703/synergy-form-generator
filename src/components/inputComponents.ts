@@ -1,4 +1,4 @@
-import { TSynergyFieldComponent } from "~/types";
+import { TSynergyFieldComponent } from "synergy-form-generator/types";
 import {
 	ColorInput,
 	DateInput,

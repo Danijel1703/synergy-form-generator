@@ -1,6 +1,12 @@
 import { map } from "lodash";
 import { observer } from "mobx-react";
-import { TFieldComponentProps, TForm, TFormField } from "~/types";
+import { fieldTypeConstants } from "synergy-form-generator/constants";
+import {
+	TFieldComponentProps,
+	TForm,
+	TFormField,
+} from "synergy-form-generator/types";
+import FormComponent from "./FormComponent";
 
 type Props = {
 	fields: { [key: string]: TFormField };
@@ -10,17 +16,11 @@ type Props = {
 };
 
 function FormGenerator(props: Props) {
-	const { onSubmit, className, form } = props;
+	const { onSubmit, form } = props;
 	const { fields, isValid } = form;
 
 	return (
-		<form
-			className={`col ${className}`}
-			onSubmit={(e) => {
-				e.preventDefault();
-				onSubmit(form.values);
-			}}
-		>
+		<FormComponent {...props}>
 			{map(fields, (formField) => (
 				<RenderComponent
 					key={formField.id}
@@ -28,13 +28,13 @@ function FormGenerator(props: Props) {
 				/>
 			))}
 			<Submit onSubmit={onSubmit} isValid={isValid} form={form} />
-		</form>
+		</FormComponent>
 	);
 }
 
 const Submit = observer(
 	({ isValid }: { isValid: boolean; onSubmit: Function; form: TForm }) => {
-		return <input type="submit" disabled={!isValid} />;
+		return <input type={fieldTypeConstants.submit} disabled={!isValid} />;
 	}
 );
 
@@ -53,10 +53,20 @@ const RenderComponent = observer(
 			type,
 			isValid,
 			items,
+			isRequired,
+			fieldClassName,
+			labelClassName,
+			errorClassName,
+			inputClassName,
 		} = formField;
 		const Component = formField.component;
 		return (
 			<Component
+				inputClassName={inputClassName}
+				fieldClassName={fieldClassName}
+				labelClassName={labelClassName}
+				errorClassName={errorClassName}
+				isRequired={isRequired}
 				items={items}
 				isValid={isValid}
 				key={formField.name}

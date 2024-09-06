@@ -1,5 +1,5 @@
-import { FormField } from "~/classes";
-import { TFieldProps, TForm } from "~/types";
+import { FormField } from "synergy-form-generator/classes";
+import { TFieldProps, TForm } from "synergy-form-generator/types";
 
 function createField(
 	fieldProps: TFieldProps,

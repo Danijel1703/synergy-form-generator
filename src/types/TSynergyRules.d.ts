@@ -44,3 +44,5 @@ type TSynergyRules = {
 	isIn?: Array<any> | { isActive: boolean | Function; value: Array<any> };
 	notIn?: Array<any> | { isActive: boolean | Function; value: Array<any> };
 };
+
+export default TSynergyRules;

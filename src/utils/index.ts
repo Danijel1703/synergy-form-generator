@@ -1,2 +1,2 @@
-export { default as generateRules } from "./form/generateRules";
-export { default as getError } from "./form/getError";
+export { default as generateRules } from "./generateRules";
+export { default as getError } from "./getError";

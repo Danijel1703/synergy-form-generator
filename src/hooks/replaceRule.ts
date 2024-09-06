@@ -1,5 +1,5 @@
-import MainModule from "~/main";
-import { TSynergyRule } from "~/types";
+import MainModule from "synergy-form-generator/MainModule";
+import { TSynergyRule } from "synergy-form-generator/types";
 
 const replaceRule = ({
 	name,

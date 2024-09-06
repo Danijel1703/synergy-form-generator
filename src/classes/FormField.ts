@@ -7,6 +7,7 @@ import {
 	isEmpty,
 	isFunction,
 	map,
+	some,
 } from "lodash";
 import {
 	TCustomRules,
@@ -18,14 +19,18 @@ import {
 	TRule,
 	TSelectableItem,
 	TSynergyFieldComponent,
-} from "~/types";
-import { generateRules } from "~/utils";
+	TSynergyRules,
+} from "synergy-form-generator/types";
+import { generateRules } from "synergy-form-generator/utils";
 import { makeObservable, observable, action, computed } from "mobx";
 import { v4 as uuidv4 } from "uuid";
-import inputComponents from "~/components/inputComponents";
-import MainModule from "~/main";
-import { fieldTypeConstants } from "~/constants";
-import { DropdownStore } from "~/stores";
+import inputComponents from "synergy-form-generator/components/inputComponents";
+import MainModule from "synergy-form-generator/MainModule";
+import {
+	fieldTypeConstants,
+	ruleConstants,
+} from "synergy-form-generator/constants";
+import { DropdownStore } from "synergy-form-generator/stores";
 import { FunctionComponent } from "react";
 
 class FormField<TEntity> implements TFormField {
@@ -48,17 +53,24 @@ class FormField<TEntity> implements TFormField {
 	type: TFieldComponentType;
 	label: string;
 	initialValue: any;
+	inputClassName?: string;
+	fieldClassName?: string;
+	errorClassName?: string;
+	labelClassName?: string;
+	disabled: boolean = false;
 
 	constructor(fieldProps: TFieldProps, entity: TEntity, form: TForm) {
 		makeObservable(this, {
 			value: observable,
 			rules: observable,
 			items: observable,
+			disabled: observable,
 
 			setValue: action,
 			onChange: action,
 			setRules: action,
 			setItems: action,
+			setDisabled: action,
 
 			isValid: computed,
 			error: computed,
@@ -70,14 +82,28 @@ class FormField<TEntity> implements TFormField {
 		this.form = form;
 		this.value = this.entity[this.fieldProps.name as keyof TEntity];
 		this.initialValue = this.value;
-		const { dependencies, customComponent, placeholder, label, name, type } =
-			this.fieldProps;
+		const {
+			dependencies,
+			customComponent,
+			placeholder,
+			label,
+			name,
+			type,
+			inputClassName,
+			fieldClassName,
+			errorClassName,
+			labelClassName,
+		} = this.fieldProps;
 		this.dependencies = dependencies || [];
 		this.customComponent = customComponent;
 		this.placeholder = placeholder;
 		this.label = label;
 		this.name = name;
 		this.type = type;
+		this.inputClassName = inputClassName;
+		this.fieldClassName = fieldClassName;
+		this.errorClassName = errorClassName;
+		this.labelClassName = labelClassName;
 		this.setItems((this.items = this.fieldProps.items || []));
 		this.setRules(fieldProps.rules, fieldProps.customRules);
 		this.initialize();
@@ -111,6 +137,10 @@ class FormField<TEntity> implements TFormField {
 		);
 	}
 
+	get isRequired() {
+		return some(this.rules, (rule) => rule.name === ruleConstants.required);
+	}
+
 	get component(): TSynergyFieldComponent {
 		return this._component;
 	}
@@ -118,6 +148,18 @@ class FormField<TEntity> implements TFormField {
 	setItems(items: Array<TSelectableItem>) {
 		this.items = items;
 	}
+
+	reset = () => this.setValue(this.initialValue);
+
+	clear = () => this.setValue(null);
+
+	setDisabled(disabled: boolean) {
+		this.disabled = disabled;
+	}
+
+	disable = () => this.setDisabled(true);
+
+	enable = () => this.setDisabled(false);
 
 	private initialize() {
 		this._component = this.customComponent || MainModule.components[this.type];

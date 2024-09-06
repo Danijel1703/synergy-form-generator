@@ -1,5 +1,5 @@
-import { Form } from "~/classes";
-import { TFieldProps, TOptions } from "~/types";
+import { Form } from "synergy-form-generator/classes";
+import { TFieldProps, TOptions } from "synergy-form-generator/types";
 
 function createForm<TEntity>({
 	EntityClass,

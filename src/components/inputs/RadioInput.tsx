@@ -1,7 +1,7 @@
 import { map } from "lodash";
 import { observer } from "mobx-react";
-import { fieldTypeConstants } from "~/constants";
-import { TFieldComponentProps } from "~/types";
+import { fieldTypeConstants } from "synergy-form-generator/constants";
+import { TFieldComponentProps } from "synergy-form-generator/types";
 import { v4 as uuidv4 } from "uuid";
 
 function RadioInput(props: TFieldComponentProps) {

@@ -1,4 +1,4 @@
-import { TDropdownStore, TFieldComponentType } from ".";
+import { TDropdownStore, TFieldComponentType, TSynergyRules } from ".";
 
 type TFieldComponentProps = {
 	onChange: () => void;
@@ -13,6 +13,11 @@ type TFieldComponentProps = {
 	items?: Array<{ id: string; value: any; label: string }>;
 	dropdownStore?: TDropdownStore;
 	type: TFieldComponentType;
+	isRequired?: boolean;
+	fieldClassName?: string;
+	labelClassName?: string;
+	errorClassName?: string;
+	inputClassName?: string;
 };
 
 export default TFieldComponentProps;

@@ -1,6 +1,5 @@
 type TOptions = {
-	formTemplate: string;
-	clearInitialErrors: boolean;
+	clearInitialErrors?: boolean;
 };
 
 export default TOptions;

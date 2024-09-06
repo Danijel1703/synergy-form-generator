@@ -4,6 +4,7 @@ import {
 	TFieldComponentType,
 	TGeTSelectableItemsFunc,
 	TSelectableItem,
+	TSynergyRules,
 } from ".";
 
 type TFieldProps = {
@@ -19,6 +20,10 @@ type TFieldProps = {
 	getItems?: TGeTSelectableItemsFunc;
 	hideField?: boolean | ((values: any) => boolean);
 	items?: Array<TSelectableItem>;
+	fieldClassName?: string;
+	labelClassName?: string;
+	errorClassName?: string;
+	inputClassName?: string;
 };
 
 export default TFieldProps;

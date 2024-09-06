@@ -27,6 +27,14 @@ interface TFormField {
 	hideField?: boolean;
 	items?: Array<TSelectableItem>;
 	hasChanged: () => boolean;
+	fieldClassName?: string;
+	labelClassName?: string;
+	errorClassName?: string;
+	inputClassName?: string;
+	clear: () => void;
+	reset: () => void;
+	disable: () => void;
+	enable: () => void;
 }
 
 export default TFormField;
