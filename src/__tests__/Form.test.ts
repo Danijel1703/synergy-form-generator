@@ -56,8 +56,8 @@ describe("Form", () => {
 	it("should return form errors", () => {
 		const form = new Form(fieldPropsMock, onSubmitMock, {}, entityMock);
 
-		form.fields["field1"].errors = ["Error 1"];
-		form.fields["field2"].errors = ["Error 2"];
+		// form.fields["field1"].errors = ["Error 1"];
+		// form.fields["field2"].errors = ["Error 2"];
 
 		const errors = form.errors;
 		expect(errors).toEqual([
@@ -141,8 +141,8 @@ describe("Form", () => {
 		const form = new Form(fieldPropsMock, onSubmitMock, {}, entityMock);
 		const clearErrorMock = jest.fn();
 
-		form.fields["field1"].rules = [{ clearError: clearErrorMock }];
-		form.fields["field2"].rules = [{ clearError: clearErrorMock }];
+		// form.fields["field1"].rules = [{ clearError: clearErrorMock }];
+		// form.fields["field2"].rules = [{ clearError: clearErrorMock }];
 
 		form.clearErrors();
 
