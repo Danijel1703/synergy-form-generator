@@ -37,7 +37,7 @@ interface TFormField {
 	disable: () => void;
 	enable: () => void;
 	disabled: boolean;
-	placeholder: string;
+	placeholder: string | undefined;
 	setRules: () => void;
 }
 
