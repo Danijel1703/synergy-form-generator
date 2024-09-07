@@ -1,6 +1,7 @@
 import { ChangeEventHandler } from "react";
 import {
 	TDropdownStore,
+	TFieldComponentType,
 	TForm,
 	TRule,
 	TSelectableItem,
@@ -10,8 +11,8 @@ import {
 interface TFormField {
 	name: string;
 	label: string;
-	type: string;
-	value: string | number | undefined;
+	type: TFieldComponentType;
+	value: any;
 	onChange: ChangeEventHandler<HTMLInputElement>;
 	component: TSynergyFieldComponent;
 	className?: string;
@@ -35,6 +36,9 @@ interface TFormField {
 	reset: () => void;
 	disable: () => void;
 	enable: () => void;
+	disabled: boolean;
+	placeholder: string;
+	setRules: () => void;
 }
 
 export default TFormField;

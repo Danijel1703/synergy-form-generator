@@ -1,4 +1,4 @@
-import { each, map } from "lodash";
+import { each, isBoolean, map } from "lodash";
 import {
 	TCustomRules,
 	TFormField,
@@ -39,7 +39,7 @@ function generateRules(
 					isValid: boolean;
 					error: string | undefined;
 				},
-				compareValue: value,
+				compareValue: isBoolean(value) ? undefined : value,
 				dependencies: field.dependencies,
 			});
 		}

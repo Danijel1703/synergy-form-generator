@@ -1,16 +1,22 @@
-import { TDropdownStore, TFieldComponentType, TSynergyRules } from ".";
+import { ChangeEventHandler } from "react";
+import {
+	TDropdownStore,
+	TFieldComponentType,
+	TSelectableItem,
+	TSynergyRules,
+} from ".";
 
 type TFieldComponentProps = {
-	onChange: () => void;
+	onChange: ChangeEventHandler<HTMLInputElement>;
 	placeholder: string;
 	label: string;
-	value: string;
+	value: any;
 	className?: string;
 	isValid: boolean;
 	error?: string;
 	rules: TSynergyRules;
 	disabled: boolean;
-	items?: Array<{ id: string; value: any; label: string }>;
+	items?: Array<TSelectableItem>;
 	dropdownStore?: TDropdownStore;
 	type: TFieldComponentType;
 	isRequired?: boolean;

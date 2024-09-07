@@ -1,5 +1,5 @@
 type TSelectableItem = {
-	id: number | string;
+	id: string;
 	label: string;
 	value: any;
 	isSelected?: boolean;

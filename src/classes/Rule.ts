@@ -10,8 +10,8 @@ type RuleConfig = {
 		error: string | undefined;
 	};
 	isActive: boolean | ((values: any) => boolean);
-	dependencies: Array<string>;
-	compareValue: RegExp | number | string | Array<any>;
+	dependencies?: Array<string>;
+	compareValue?: RegExp | number | string | Array<any>;
 };
 
 class Rule extends Validator implements TRule {
@@ -23,7 +23,7 @@ class Rule extends Validator implements TRule {
 		{ name, isActive, validator, dependencies, compareValue }: RuleConfig,
 		field: TFormField
 	) {
-		super(validator, compareValue, field);
+		super(validator, field, compareValue);
 		this.name = name;
 		this.dependencies = dependencies;
 		makeObservable(this, {

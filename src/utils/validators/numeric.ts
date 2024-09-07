@@ -1,10 +1,12 @@
 import { ruleConstants } from "synergy-form-generator/constants";
 import getError from "../getError";
 import { TFormField } from "synergy-form-generator/types";
+import { isNumber } from "lodash";
 
 function numeric(field: TFormField) {
 	const { value } = field;
-	const isValid = /^[0-9]+$/.test(value as string);
+	const isValid = isNumber(value);
+
 	return {
 		isValid,
 		error: getError(field, ruleConstants.numeric, isValid),

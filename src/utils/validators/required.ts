@@ -1,4 +1,4 @@
-import { isEmpty } from "lodash";
+import { isEmpty, isNumber } from "lodash";
 import { TFormField } from "synergy-form-generator/types";
 import getError from "../getError";
 import { ruleConstants } from "synergy-form-generator/constants";
@@ -8,7 +8,7 @@ function required(field: TFormField): {
 	error: string | undefined;
 } {
 	const { value } = field;
-	const isValid = !isEmpty(value);
+	const isValid = !isEmpty(value) || isNumber(value);
 	return { isValid, error: getError(field, ruleConstants.required, isValid) };
 }
 

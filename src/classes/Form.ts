@@ -31,10 +31,10 @@ class Form<TEntity> implements TForm {
 			errors: computed,
 			values: computed,
 		});
-		this.initializeEntity(EntityClass, entity);
 		this.fieldProps = fieldProps;
 		this.options = { ...this.defaultOptions, ...options };
 		this.onSubmit = onSubmit;
+		this.initializeEntity(EntityClass, entity);
 		this.generateFields();
 	}
 
@@ -65,7 +65,7 @@ class Form<TEntity> implements TForm {
 		EntityClass: (new () => TEntity) | undefined,
 		entity: TEntity | undefined
 	) {
-		if (isEmpty(this.entity)) {
+		if (isEmpty(entity)) {
 			this.entity = EntityClass ? new EntityClass() : {};
 		} else {
 			this.entity = entity;
@@ -79,7 +79,6 @@ class Form<TEntity> implements TForm {
 		});
 		each(keys(this.fields), (key) => {
 			each(this.fields[key].rules, (rule) => rule.appendDependecyCallbacks());
-			Object.freeze(this.fields[key]);
 		});
 		if (this.options.clearInitialErrors) this.clearErrors();
 	}
@@ -104,7 +103,6 @@ class Form<TEntity> implements TForm {
 			rule.appendDependecyCallbacks();
 			rule.clearError();
 		});
-		Object.freeze(this.fields[field.name]);
 	};
 }
 

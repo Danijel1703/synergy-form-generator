@@ -21,7 +21,7 @@ class Validator implements TValidator {
 	isActive: ((value: any) => boolean) | boolean = false;
 	_isValid: boolean = false;
 	_error: string | undefined;
-	compareValue: any;
+	compareValue?: any;
 
 	constructor(
 		validator: (
@@ -31,8 +31,8 @@ class Validator implements TValidator {
 			isValid: boolean;
 			error: string | undefined;
 		},
-		compareValue: RegExp | number | string | Array<any>,
-		field: TFormField
+		field: TFormField,
+		compareValue?: RegExp | number | string | Array<any>
 	) {
 		makeObservable(this, {
 			value: computed,

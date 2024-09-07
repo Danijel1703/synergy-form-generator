@@ -8,6 +8,7 @@ import {
 	isFunction,
 	map,
 	some,
+	toNumber,
 } from "lodash";
 import {
 	TCustomRules,
@@ -67,7 +68,6 @@ class FormField<TEntity> implements TFormField {
 			disabled: observable,
 
 			setValue: action,
-			onChange: action,
 			setRules: action,
 			setItems: action,
 			setDisabled: action,
@@ -151,7 +151,7 @@ class FormField<TEntity> implements TFormField {
 
 	reset = () => this.setValue(this.initialValue);
 
-	clear = () => this.setValue(null);
+	clear = () => this.setValue(undefined);
 
 	setDisabled(disabled: boolean) {
 		this.disabled = disabled;
@@ -176,10 +176,10 @@ class FormField<TEntity> implements TFormField {
 		}
 	}
 
-	setValue = (value: any) => {
+	setValue(value: any) {
 		this.value = value;
 		this.entity[this.name as keyof TEntity] = value;
-	};
+	}
 
 	onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		let value: any = e.target.value;
@@ -205,6 +205,11 @@ class FormField<TEntity> implements TFormField {
 					})
 				);
 				value = filter(this.items, (item) => item.isSelected);
+				break;
+			}
+			case fieldTypeConstants.phone:
+			case fieldTypeConstants.number: {
+				value = toNumber(value);
 			}
 		}
 		this.setValue(value);

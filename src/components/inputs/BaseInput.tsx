@@ -1,6 +1,5 @@
 import { isNil } from "lodash";
 import { observer } from "mobx-react";
-import React from "react";
 import { TFieldComponentProps } from "synergy-form-generator/types";
 
 function BaseInput(props: TFieldComponentProps) {
@@ -20,7 +19,7 @@ function BaseInput(props: TFieldComponentProps) {
 	} = props;
 
 	return (
-		<React.Fragment>
+		<>
 			<div className={fieldClassName}>
 				<label className={labelClassName}>
 					{label}
@@ -34,9 +33,10 @@ function BaseInput(props: TFieldComponentProps) {
 					placeholder={placeholder}
 					value={isNil(value) ? "" : value}
 					disabled={disabled}
+					aria-label={label}
 				/>
 			</div>
-		</React.Fragment>
+		</>
 	);
 }
 

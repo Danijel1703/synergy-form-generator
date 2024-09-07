@@ -17,6 +17,7 @@ interface TForm {
 	reset: () => void;
 	disable: () => void;
 	enable: () => void;
+	clearErrors: () => void;
 }
 
 export default TForm;
