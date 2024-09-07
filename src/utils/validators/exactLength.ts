@@ -7,7 +7,7 @@ function exactLength(field: TFormField, length: number) {
 	const isValid = (value as string).length === length;
 	return {
 		isValid,
-		error: getError(field, ruleConstants.exactLength, isValid),
+		error: getError(field, ruleConstants.exactLength, isValid, length),
 	};
 }
 

@@ -98,7 +98,9 @@ class FormField<TEntity> implements TFormField {
 			fieldClassName,
 			errorClassName,
 			labelClassName,
+			watch,
 		} = this.fieldProps;
+		this.onChangeCallbacks.push(watch);
 		this.dependencies = dependencies || [];
 		this.customComponent = customComponent;
 		this.placeholder = placeholder;

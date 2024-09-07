@@ -1,6 +1,7 @@
 import { ruleConstants } from "synergy-form-generator/constants";
 import getError from "../getError";
 import { TFormField } from "synergy-form-generator/types";
+import { isString } from "lodash";
 
 function mustStartWith(field: TFormField, startValue: string | RegExp) {
 	const { value } = field;
@@ -14,7 +15,12 @@ function mustStartWith(field: TFormField, startValue: string | RegExp) {
 	}
 	return {
 		isValid,
-		error: getError(field, ruleConstants.mustStartWith, isValid),
+		error: getError(
+			field,
+			ruleConstants.mustStartWith,
+			isValid,
+			isString(startValue) ? startValue : undefined
+		),
 	};
 }
 

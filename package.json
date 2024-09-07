@@ -1,7 +1,7 @@
 {
 	"name": "synergy-form-generator",
 	"private": false,
-	"version": "1.0.0",
+	"version": "1.0.3",
 	"type": "module",
 	"main": "dist/index.js",
 	"module": "dist/index.esm.js",
@@ -9,12 +9,17 @@
 	"author": {
 		"name": "Danijel Jakovac"
 	},
+	"files": [
+		"dist",
+		"README.md"
+	],
 	"scripts": {
 		"dev": "vite",
 		"build": "tsup index.ts --format cjs,esm --dts",
 		"lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
 		"preview": "vite preview",
-		"test": "jest"
+		"test": "jest",
+		"prepublish": "npm run build"
 	},
 	"dependencies": {
 		"lodash": "^4.17.21",
@@ -23,7 +28,6 @@
 		"path": "^0.12.7",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
-		"react-router-dom": "^6.16.0",
 		"react-select": "^5.8.0",
 		"ts-jest": "^29.2.5",
 		"tsup": "^8.2.4",

@@ -9,7 +9,6 @@ import {
 import FormComponent from "./FormComponent";
 
 type Props = {
-	onSubmit: Function;
 	className?: string;
 	form: TForm;
 };

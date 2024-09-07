@@ -1,6 +1,7 @@
 import { TFormField } from "synergy-form-generator/types";
 import getError from "../getError";
 import { ruleConstants } from "synergy-form-generator/constants";
+import { isString } from "lodash";
 
 function mustEndWith(field: TFormField, endValue: string | RegExp) {
 	const { value } = field;
@@ -16,7 +17,12 @@ function mustEndWith(field: TFormField, endValue: string | RegExp) {
 
 	return {
 		isValid,
-		error: getError(field, ruleConstants.mustEndWith, isValid),
+		error: getError(
+			field,
+			ruleConstants.mustEndWith,
+			isValid,
+			isString(endValue) ? endValue : undefined
+		),
 	};
 }
 
