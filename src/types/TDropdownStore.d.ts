@@ -9,6 +9,8 @@ interface TDropdownStore {
 	selectItems: (items: Array<TSelectableItem>) => void;
 	isMulti: boolean;
 	setValue: (value: any) => void;
+	updateFilter: (filter: any) => any;
+	filter: any;
 }
 
 export default TDropdownStore;

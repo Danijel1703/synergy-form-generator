@@ -266,7 +266,12 @@ describe("Form", () => {
 		};
 		emailError = {
 			field: mockFieldNames.email,
-			errors: [{ rule: ruleConstants.email, error: errorConstants.email }],
+			errors: [
+				{
+					rule: ruleConstants.email,
+					error: errorConstants.email.replace(":field:", "Email"),
+				},
+			],
 		};
 		form = new Form(fieldProps, onSubmit, {}, entity);
 	});

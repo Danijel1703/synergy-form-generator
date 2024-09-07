@@ -11,7 +11,12 @@ type RuleConfig = {
 	};
 	isActive: boolean | ((values: any) => boolean);
 	dependencies?: Array<string>;
-	compareValue?: RegExp | number | string | Array<any>;
+	compareValue?:
+		| RegExp
+		| number
+		| string
+		| Array<any>
+		| ((values: any) => RegExp | number | string | Array<any>);
 };
 
 class Rule extends Validator implements TRule {
@@ -56,6 +61,7 @@ class Rule extends Validator implements TRule {
 			dependencyField.addOnChangeCallback(() => {
 				this.setIsActive(this.getIsActive(this.field.form.values));
 				this.validate();
+				if (!this.field.hasChanged()) this.clearError();
 			});
 		});
 	}

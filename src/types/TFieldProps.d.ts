@@ -24,6 +24,8 @@ type TFieldProps = {
 	labelClassName?: string;
 	errorClassName?: string;
 	inputClassName?: string;
+	filter?: any;
+	updateFilter?: (filter: any) => any;
 };
 
 export default TFieldProps;

@@ -79,6 +79,7 @@ class Form<TEntity> implements TForm {
 		});
 		each(keys(this.fields), (key) => {
 			each(this.fields[key].rules, (rule) => rule.appendDependecyCallbacks());
+			this.fields[key].appendDependecyCallbacks();
 		});
 		if (this.options.clearInitialErrors) this.clearErrors();
 	}
@@ -103,6 +104,7 @@ class Form<TEntity> implements TForm {
 			rule.appendDependecyCallbacks();
 			rule.clearError();
 		});
+		this.fields[field.name].appendDependecyCallbacks();
 	};
 }
 

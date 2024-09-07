@@ -8,13 +8,16 @@ import {
 function DropdownInput({ dropdownStore }: { dropdownStore: TDropdownStore }) {
 	const { isMulti, getItems, items, selectItem, selectItems } = dropdownStore;
 	return (
-		<Select
-			onMenuOpen={getItems}
-			isMulti={isMulti}
-			options={items}
-			onChange={isMulti ? selectItems : selectItem}
-			closeMenuOnSelect={!isMulti}
-		/>
+		<>
+			<Select
+				onMenuOpen={getItems}
+				isMulti={isMulti}
+				options={items}
+				onChange={isMulti ? selectItems : selectItem}
+				closeMenuOnSelect={!isMulti}
+				onMenuScrollToBottom={getItems}
+			/>
+		</>
 	);
 }
 

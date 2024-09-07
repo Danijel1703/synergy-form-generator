@@ -4,9 +4,11 @@ import { TForm } from "synergy-form-generator/types";
 function FormComponent({
 	form,
 	children,
+	className,
 }: {
 	form: TForm;
 	children: ReactNode;
+	className?: string;
 }) {
 	return (
 		<form
@@ -14,6 +16,7 @@ function FormComponent({
 				e.preventDefault();
 				form.onSubmit(form.values);
 			}}
+			className={className}
 		>
 			{children}
 		</form>

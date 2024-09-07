@@ -3,7 +3,7 @@ import MainModule from "synergy-form-generator/MainModule";
 
 const getError = (_field: TFormField, rule: string, isValid: boolean) => {
 	if (isValid) return undefined;
-	return MainModule.errorConstants[rule];
+	return MainModule.errorConstants[rule].replace(":field:", _field.label);
 };
 
 export default getError;

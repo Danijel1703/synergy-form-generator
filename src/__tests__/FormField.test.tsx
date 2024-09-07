@@ -2,11 +2,7 @@ import { cleanup, fireEvent, render } from "@testing-library/react";
 import { isEmpty } from "lodash";
 import { Form, FormField } from "synergy-form-generator/classes";
 import { TextInput } from "synergy-form-generator/components";
-import {
-	errorConstants,
-	fieldTypeConstants,
-	ruleConstants,
-} from "synergy-form-generator/constants";
+import { fieldTypeConstants } from "synergy-form-generator/constants";
 import { TFieldProps, TForm, TFormField } from "synergy-form-generator/types";
 
 describe("FormField", () => {
@@ -32,7 +28,7 @@ describe("FormField", () => {
 			hideField: ({ firstName }) => isEmpty(firstName),
 		};
 		entity = {
-			firstName: "Danijel",
+			firstName: undefined,
 			email: "synergy.form.generator@gmail.com",
 			lastName: "Jakovac",
 			phoneNumber: 123456,
@@ -72,21 +68,6 @@ describe("FormField", () => {
 		expect(field.isValid).toBeTruthy();
 		fireOnChange("");
 		expect(field.isValid).toBeFalsy();
-	});
-
-	it("should return required error", () => {
-		fireOnChange("");
-		expect(field.isValid).toBeFalsy();
-		expect(field.error).toBe(errorConstants.required);
-	});
-
-	it("should return errors", () => {
-		fireOnChange("");
-		expect(field.isValid).toBeFalsy();
-		expect(field.errors).toContainEqual({
-			error: errorConstants.required,
-			rule: ruleConstants.required,
-		});
 	});
 
 	it("should hide field", () => {

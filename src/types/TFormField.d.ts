@@ -39,6 +39,7 @@ interface TFormField {
 	disabled: boolean;
 	placeholder: string | undefined;
 	setRules: () => void;
+	appendDependecyCallbacks: () => void;
 }
 
 export default TFormField;

@@ -1,4 +1,4 @@
-import { each, filter, find, isEmpty, isFunction, map } from "lodash";
+import { concat, each, filter, find, isEmpty, isFunction, map } from "lodash";
 import { action, computed, makeObservable, observable } from "mobx";
 import {
 	TDropdownStore,
@@ -10,6 +10,8 @@ type TConfig = {
 	getItems?: TGeTSelectableItemsFunc;
 	setValue: (value: any) => void;
 	items?: Array<TSelectableItem>;
+	filter?: any;
+	updateFilter: (filter: any) => any;
 };
 
 class DropdownStore implements TDropdownStore {
@@ -22,8 +24,16 @@ class DropdownStore implements TDropdownStore {
 	isMulti: boolean = true;
 	setValue: (value: any) => void;
 	itemsWidth: number = 0;
+	filter: any = {};
+	updateFilter: (filter: any) => any;
 
-	constructor({ getItems, setValue, items = [] }: TConfig) {
+	constructor({
+		getItems,
+		setValue,
+		items = [],
+		filter,
+		updateFilter,
+	}: TConfig) {
 		makeObservable(this, {
 			selectItem: action,
 			selectItems: action,
@@ -35,6 +45,8 @@ class DropdownStore implements TDropdownStore {
 			selectedItems: computed,
 			selectedItem: computed,
 		});
+		this.filter = filter;
+		this.updateFilter = updateFilter;
 		this.setValue = setValue;
 		if (isFunction(getItems)) {
 			this.fetchFunc = getItems;
@@ -80,12 +92,13 @@ class DropdownStore implements TDropdownStore {
 	}
 
 	getItems = async () => {
-		//TODO: Implement actual fetching results with filtering
-		const result = this.fetchFunc({});
+		const result = this.fetchFunc(this.filter);
 		if (result instanceof Promise) {
 			try {
 				const response = await result;
-				this.setItems(response);
+				if (this.items === response) return;
+				this.setItems(concat(this.items, response));
+				this.updateFilter(this.filter);
 			} catch (error) {
 				if (error) console.error(error);
 				this.setItems([]);

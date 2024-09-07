@@ -4,6 +4,7 @@ import {
 	every,
 	filter,
 	find,
+	isBoolean,
 	isEmpty,
 	isFunction,
 	map,
@@ -59,6 +60,8 @@ class FormField<TEntity> implements TFormField {
 	errorClassName?: string;
 	labelClassName?: string;
 	disabled: boolean = false;
+	hideField: boolean = false;
+	getIsHidden?: Function;
 
 	constructor(fieldProps: TFieldProps, entity: TEntity, form: TForm) {
 		makeObservable(this, {
@@ -66,7 +69,9 @@ class FormField<TEntity> implements TFormField {
 			rules: observable,
 			items: observable,
 			disabled: observable,
+			hideField: observable,
 
+			setHideField: action,
 			setValue: action,
 			setRules: action,
 			setItems: action,
@@ -104,6 +109,12 @@ class FormField<TEntity> implements TFormField {
 		this.fieldClassName = fieldClassName;
 		this.errorClassName = errorClassName;
 		this.labelClassName = labelClassName;
+		if (isBoolean(this.fieldProps.hideField)) {
+			this.setHideField(this.fieldProps.hideField);
+		} else if (isFunction(this.fieldProps.hideField)) {
+			this.getIsHidden = this.fieldProps.hideField;
+			this.setHideField(this.getIsHidden(this.form.values));
+		}
 		this.setItems((this.items = this.fieldProps.items || []));
 		this.setRules(fieldProps.rules, fieldProps.customRules);
 		this.initialize();
@@ -113,9 +124,8 @@ class FormField<TEntity> implements TFormField {
 		return this.value !== this.initialValue;
 	}
 
-	get hideField() {
-		const hideField = this.fieldProps.hideField;
-		return isFunction(hideField) ? hideField(this.form.values) : hideField;
+	setHideField(hideField: boolean) {
+		this.hideField = hideField;
 	}
 
 	get isValid() {
@@ -170,6 +180,8 @@ class FormField<TEntity> implements TFormField {
 					getItems: this.fieldProps.getItems,
 					setValue: this.setValue,
 					items: this.items,
+					filter: this.fieldProps.filter,
+					updateFilter: this.fieldProps.updateFilter,
 				});
 				break;
 			}
@@ -220,6 +232,17 @@ class FormField<TEntity> implements TFormField {
 
 	addOnChangeCallback = (onChangeCallback: Function) => {
 		this.onChangeCallbacks.push(onChangeCallback);
+	};
+
+	appendDependecyCallbacks = () => {
+		each(this.dependencies, (dependency) => {
+			const dependencyField = this.form.fields[dependency] as TFormField;
+			dependencyField.addOnChangeCallback(() => {
+				if (isFunction(this.getIsHidden)) {
+					this.setHideField(this.getIsHidden(this.form.values));
+				}
+			});
+		});
 	};
 
 	setRules(rules?: TSynergyRules, customRules?: TCustomRules | undefined) {

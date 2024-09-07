@@ -9,15 +9,14 @@ import {
 import FormComponent from "./FormComponent";
 
 type Props = {
-	fields: { [key: string]: TFormField };
 	onSubmit: Function;
 	className?: string;
 	form: TForm;
 };
 
 function FormGenerator(props: Props) {
-	const { onSubmit, form } = props;
-	const { fields, isValid } = form;
+	const { form } = props;
+	const { fields, isValid, onSubmit } = form;
 
 	return (
 		<FormComponent {...props}>
@@ -58,8 +57,10 @@ const RenderComponent = observer(
 			labelClassName,
 			errorClassName,
 			inputClassName,
+			hideField,
 		} = formField;
 		const Component = formField.component;
+		if (hideField) return <></>;
 		return (
 			<Component
 				inputClassName={inputClassName}

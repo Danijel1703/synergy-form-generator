@@ -1,3 +1,4 @@
+import { isFunction } from "lodash";
 import {
 	action,
 	computed,
@@ -21,18 +22,33 @@ class Validator implements TValidator {
 	isActive: ((value: any) => boolean) | boolean = false;
 	_isValid: boolean = false;
 	_error: string | undefined;
-	compareValue?: any;
+	compareValue?:
+		| RegExp
+		| number
+		| string
+		| Array<any>
+		| ((values: any) => RegExp | number | string | Array<any>);
 
 	constructor(
 		validator: (
 			field: TFormField,
-			compareValue: any
+			compareValue:
+				| RegExp
+				| number
+				| string
+				| Array<any>
+				| ((values: any) => RegExp | number | string | Array<any>)
 		) => {
 			isValid: boolean;
 			error: string | undefined;
 		},
 		field: TFormField,
-		compareValue?: RegExp | number | string | Array<any>
+		compareValue?:
+			| RegExp
+			| number
+			| string
+			| Array<any>
+			| ((values: any) => RegExp | number | string | Array<any>)
 	) {
 		makeObservable(this, {
 			value: computed,
@@ -70,7 +86,17 @@ class Validator implements TValidator {
 			});
 			return;
 		}
-		const result = this.validator(this.field, this.compareValue);
+		let compareValue:
+			| RegExp
+			| number
+			| string
+			| Array<any>
+			| ((values: any) => RegExp | number | string | Array<any>) =
+			this.compareValue;
+		if (isFunction(this.compareValue)) {
+			compareValue = this.compareValue(this.field.form.values);
+		}
+		const result = this.validator(this.field, compareValue);
 		if (result instanceof Promise) {
 			try {
 				const validation = await result;
