@@ -61,7 +61,6 @@ class Rule extends Validator implements TRule {
 			dependencyField.addOnChangeCallback(() => {
 				this.setIsActive(this.getIsActive(this.field.form.values));
 				this.validate();
-				if (!this.field.hasChanged()) this.clearError();
 			});
 		});
 	}

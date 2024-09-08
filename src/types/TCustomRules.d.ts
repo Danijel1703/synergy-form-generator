@@ -1,3 +1,5 @@
+import TFormField from "./TFormField";
+
 type CustomRule = {
 	/**
 	 * The name identifier for the custom rule.
@@ -8,7 +10,7 @@ type CustomRule = {
 	 * A function that validates the form values against the rule.
 	 * Returns an object with `isValid` indicating if the validation passed, and `error` containing an error message if validation failed.
 	 */
-	validator: (values: any) => {
+	validator: (field: TFormField) => {
 		isValid: boolean;
 		error: string | undefined;
 	};

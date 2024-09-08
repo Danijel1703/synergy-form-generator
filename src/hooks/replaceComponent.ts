@@ -5,8 +5,8 @@ import {
 } from "synergy-form-generator/types";
 
 const replaceComponent = (
-	name: TFieldComponentType,
+	type: TFieldComponentType,
 	component: TSynergyFieldComponent
-) => MainModule.replaceComponent(name, component);
+) => MainModule.replaceComponent(type, component);
 
 export default replaceComponent;

@@ -2,7 +2,10 @@ import { TFormField } from ".";
 
 interface TValidator {
 	field: TFormField;
-	validator: (field: TFormField) => {
+	validator: (
+		field: TFormField,
+		compareValue?: any
+	) => {
 		isValid: boolean;
 		error: string | undefined;
 	};

@@ -13,7 +13,7 @@ const getError = (
 		":field:",
 		_field.label
 	);
-	if (!isNumber(compareValue) && !isString(compareValue)) return;
+	if (!isNumber(compareValue) && !isString(compareValue)) return error;
 	compareValue = isNumber(compareValue)
 		? compareValue.toString()
 		: compareValue;

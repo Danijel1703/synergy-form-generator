@@ -10,8 +10,16 @@ import {
 	map,
 	some,
 	toNumber,
-	update,
 } from "lodash";
+import { action, computed, makeObservable, observable } from "mobx";
+import { FunctionComponent } from "react";
+import inputComponents from "synergy-form-generator/components/inputComponents";
+import {
+	fieldTypeConstants,
+	ruleConstants,
+} from "synergy-form-generator/constants";
+import MainModule from "synergy-form-generator/MainModule";
+import { DropdownStore } from "synergy-form-generator/stores";
 import {
 	TCustomRules,
 	TDropdownStore,
@@ -25,16 +33,7 @@ import {
 	TSynergyRules,
 } from "synergy-form-generator/types";
 import { generateRules } from "synergy-form-generator/utils";
-import { makeObservable, observable, action, computed } from "mobx";
 import { v4 as uuidv4 } from "uuid";
-import inputComponents from "synergy-form-generator/components/inputComponents";
-import MainModule from "synergy-form-generator/MainModule";
-import {
-	fieldTypeConstants,
-	ruleConstants,
-} from "synergy-form-generator/constants";
-import { DropdownStore } from "synergy-form-generator/stores";
-import { FunctionComponent } from "react";
 
 class FormField<TEntity> implements TFormField {
 	private fieldProps: TFieldProps;
@@ -67,6 +66,7 @@ class FormField<TEntity> implements TFormField {
 		name: string;
 		updateFunc: (values: any) => any;
 	}> = [];
+	isRequired: boolean = false;
 
 	constructor(fieldProps: TFieldProps, entity: TEntity, form: TForm) {
 		makeObservable(this, {
@@ -75,12 +75,14 @@ class FormField<TEntity> implements TFormField {
 			items: observable,
 			disabled: observable,
 			hideField: observable,
+			isRequired: observable,
 
 			setHideField: action,
 			setValue: action,
 			setRules: action,
 			setItems: action,
 			setDisabled: action,
+			toggleIsRequired: action,
 
 			isValid: computed,
 			error: computed,
@@ -156,8 +158,11 @@ class FormField<TEntity> implements TFormField {
 		);
 	}
 
-	get isRequired() {
-		return some(this.rules, (rule) => rule.name === ruleConstants.required);
+	toggleIsRequired() {
+		this.isRequired = some(
+			this.rules,
+			(rule) => rule.name === ruleConstants.required && rule.isActive
+		);
 	}
 
 	get component(): TSynergyFieldComponent {
@@ -258,6 +263,7 @@ class FormField<TEntity> implements TFormField {
 				if (isFunction(this.getIsHidden)) {
 					this.setHideField(this.getIsHidden(this.form.values));
 				}
+				this.toggleIsRequired();
 			});
 		});
 	};

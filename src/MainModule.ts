@@ -55,10 +55,10 @@ class MainModule implements TMainModule {
 		each(rules, ({ name, validator }) => (this.validators[name] = validator));
 
 	replaceComponent(
-		name: TFieldComponentType,
+		type: TFieldComponentType,
 		component: TSynergyFieldComponent
 	) {
-		this.components[name] = component;
+		this.components[type] = component;
 	}
 }
 
