@@ -160,6 +160,26 @@ interface TFormField {
 	 * Appends callbacks for dependencies to the field.
 	 */
 	appendDependecyCallbacks: () => void;
+
+	/**
+	 * An array of objects that specify fields to update when a certain field's value changes.
+	 * Each object contains:
+	 * - `name`: The name of the field that will be updated.
+	 * - `updateFunc`: A function that receives the current form values and returns the updated value for the specified field.
+	 */
+	fieldsToUpdateOnChange?: Array<{
+		/**
+		 * The name of the field that will be updated when a change occurs.
+		 */
+		name: string;
+
+		/**
+		 * A function that takes the current form values and returns the updated value for the field.
+		 * @param values - The current values of the form.
+		 * @returns The updated value for the specified field.
+		 */
+		updateFunc: (values: any) => any;
+	}>;
 }
 
 export default TFormField;

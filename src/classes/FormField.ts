@@ -10,6 +10,7 @@ import {
 	map,
 	some,
 	toNumber,
+	update,
 } from "lodash";
 import {
 	TCustomRules,
@@ -62,6 +63,10 @@ class FormField<TEntity> implements TFormField {
 	disabled: boolean = false;
 	hideField: boolean = false;
 	getIsHidden?: Function;
+	fieldsToUpdateOnChange?: Array<{
+		name: string;
+		updateFunc: (values: any) => any;
+	}> = [];
 
 	constructor(fieldProps: TFieldProps, entity: TEntity, form: TForm) {
 		makeObservable(this, {
@@ -99,7 +104,9 @@ class FormField<TEntity> implements TFormField {
 			errorClassName,
 			labelClassName,
 			watch,
+			fieldsToUpdateOnChange,
 		} = this.fieldProps;
+		this.fieldsToUpdateOnChange = fieldsToUpdateOnChange;
 		this.onChangeCallbacks.push(watch);
 		this.dependencies = dependencies || [];
 		this.customComponent = customComponent;
@@ -230,6 +237,14 @@ class FormField<TEntity> implements TFormField {
 		each(this.onChangeCallbacks, (onChangeCallback) => {
 			isFunction(onChangeCallback) && onChangeCallback(this);
 		});
+		if (!isEmpty(this.fieldsToUpdateOnChange)) {
+			each(this.fieldsToUpdateOnChange, ({ name, updateFunc }) => {
+				if (name === this.name) return;
+				this.form.fields[name].onChange({
+					target: { value: updateFunc(this.form.values) },
+				} as React.ChangeEvent<HTMLInputElement>);
+			});
+		}
 	};
 
 	addOnChangeCallback = (onChangeCallback: Function) => {
