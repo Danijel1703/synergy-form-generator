@@ -4,6 +4,7 @@ import {
 	every,
 	filter,
 	find,
+	first,
 	isBoolean,
 	isEmpty,
 	isFunction,
@@ -236,6 +237,11 @@ class FormField<TEntity> implements TFormField {
 			case fieldTypeConstants.phone:
 			case fieldTypeConstants.number: {
 				value = toNumber(value);
+				break;
+			}
+			case fieldTypeConstants.file: {
+				value = first(e.target.files);
+				break;
 			}
 		}
 		this.setValue(value);

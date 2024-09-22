@@ -12,9 +12,9 @@ function FormComponent({
 }) {
 	return (
 		<form
-			onSubmit={(e) => {
+			onSubmit={async (e) => {
 				e.preventDefault();
-				form.onSubmit(form.values);
+				await form.onSubmit(form.values);
 			}}
 			className={className}
 		>

@@ -8,7 +8,8 @@ function required(field: TFormField): {
 	error: string | undefined;
 } {
 	const { value } = field;
-	const isValid = !isEmpty(value) || isNumber(value);
+	const isValid =
+		!isEmpty(value) || isNumber(value) || typeof value?.name === "string"; //The last arguments checks for File type objects;
 	return { isValid, error: getError(field, ruleConstants.required, isValid) };
 }
 
