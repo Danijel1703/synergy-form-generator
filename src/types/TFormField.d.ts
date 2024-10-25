@@ -22,7 +22,7 @@ interface TFormField {
 	/**
 	 * The type of the field component (e.g., text, dropdown, etc.).
 	 */
-	type: TFieldComponentType;
+	type?: TFieldComponentType;
 
 	/**
 	 * The value of the field.
@@ -69,6 +69,11 @@ interface TFormField {
 	 * An array of validation rules applied to the field.
 	 */
 	rules: Array<TRule>;
+
+	/**
+	 * Indicates whether the field is required.
+	 */
+	isRequired: boolean;
 
 	/**
 	 * The form that this field belongs to.
@@ -162,6 +167,16 @@ interface TFormField {
 	appendDependecyCallbacks: () => void;
 
 	/**
+	 * Adds selectable option.
+	 */
+	addOption: (item: TSelectableItem) => void;
+
+	/**
+	 * Removes selectable option.
+	 */
+	removeOption: (item: TSelectableItem) => void;
+
+	/**
 	 * An array of objects that specify fields to update when a certain field's value changes.
 	 * Each object contains:
 	 * - `name`: The name of the field that will be updated.
@@ -180,6 +195,11 @@ interface TFormField {
 		 */
 		updateFunc: (values: any) => any;
 	}>;
+
+	/**
+	 * Sets the the field value.
+	 */
+	setValue: (value: any) => void;
 }
 
 export default TFormField;

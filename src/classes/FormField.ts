@@ -174,6 +174,14 @@ class FormField<TEntity> implements TFormField {
 		this.items = items;
 	}
 
+	addOption(item: TSelectableItem) {
+		this.setItems([...this.items, item]);
+	}
+
+	removeOption(item: TSelectableItem) {
+		this.setItems(filter(this.items, (i) => i.id !== item.id));
+	}
+
 	reset = () => this.setValue(this.initialValue);
 
 	clear = () => this.setValue(undefined);
@@ -187,6 +195,10 @@ class FormField<TEntity> implements TFormField {
 	enable = () => this.setDisabled(false);
 
 	private initialize() {
+		if (!this.type) {
+			this.setHideField(true);
+			return;
+		}
 		this._component = this.customComponent || MainModule.components[this.type];
 		switch (this.type) {
 			case fieldTypeConstants.dropdown: {

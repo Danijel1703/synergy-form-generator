@@ -57,8 +57,12 @@ const RenderComponent = observer(
 			errorClassName,
 			inputClassName,
 			hideField,
+			addOption,
+			removeOption,
+			setValue,
 		} = formField;
 		const Component = formField.component;
+
 		if (hideField) return <></>;
 		return (
 			<Component
@@ -80,6 +84,9 @@ const RenderComponent = observer(
 				disabled={disabled}
 				error={error}
 				dropdownStore={dropdownStore}
+				addOption={addOption}
+				removeOption={removeOption}
+				setValue={setValue}
 			/>
 		);
 	}

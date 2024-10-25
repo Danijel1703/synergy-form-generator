@@ -1,10 +1,6 @@
 export { default as TextInput } from "./inputs/TextInput";
 export { default as PasswordInput } from "./inputs/PasswordInput";
-export { default as FormGenerator } from "./FormGenerator";
 export { default as DropdownInput } from "./inputs/DropdownInput";
-export { default as Submit } from "./Submit";
-export { default as FormComponent } from "./FormComponent";
-export { default as FieldComponent } from "./FieldComponent";
 export { default as BaseInput } from "./inputs/BaseInput";
 export { default as ColorInput } from "./inputs/ColorInput";
 export { default as EmailInput } from "./inputs/EmailInput";
@@ -17,3 +13,7 @@ export { default as WeekInput } from "./inputs/WeekInput";
 export { default as RadioInput } from "./inputs/RadioInput";
 export { default as DateInput } from "./inputs/DateInput";
 export { default as NumberInput } from "./inputs/NumberInput";
+export { default as FormGenerator } from "./FormGenerator";
+export { default as Submit } from "./Submit";
+export { default as FormComponent } from "./FormComponent";
+export { default as FieldComponent } from "./FieldComponent";

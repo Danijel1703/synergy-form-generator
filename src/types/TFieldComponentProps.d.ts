@@ -24,6 +24,9 @@ type TFieldComponentProps = {
 	labelClassName?: string;
 	errorClassName?: string;
 	inputClassName?: string;
+	addOption: (item: TSelectableItem) => void;
+	removeOption: (item: TSelectableItem) => void;
+	setValue: (value: any) => void;
 };
 
 export default TFieldComponentProps;

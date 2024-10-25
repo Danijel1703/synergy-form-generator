@@ -17,12 +17,12 @@ type TFieldProps = {
 	/**
 	 * The label to display for the field.
 	 */
-	label: string;
+	label?: string;
 
 	/**
 	 * The type of the field component (e.g., text, dropdown, etc.).
 	 */
-	type: TFieldComponentType;
+	type?: TFieldComponentType;
 
 	/**
 	 * A custom React component that can replace the default field component.

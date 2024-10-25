@@ -96,7 +96,7 @@ class DropdownStore implements TDropdownStore {
 		if (result instanceof Promise) {
 			try {
 				const response = await result;
-				if (this.items === response) return;
+				if (this.items === response) return this._items;
 				this.setItems(concat(this.items, response));
 				this.updateFilter(this.filter);
 			} catch (error) {
@@ -106,6 +106,7 @@ class DropdownStore implements TDropdownStore {
 		} else {
 			this.setItems(result);
 		}
+		return this._items;
 	};
 }
 

@@ -19,24 +19,22 @@ function BaseInput(props: TFieldComponentProps) {
 	} = props;
 
 	return (
-		<>
-			<div className={fieldClassName}>
-				<label className={labelClassName}>
-					{label}
-					{isRequired && "*"}
-				</label>
-				{error && <span className={errorClassName}>{error}</span>}
-				<input
-					className={inputClassName}
-					type={type}
-					onChange={onChange}
-					placeholder={placeholder}
-					value={isNil(value) ? "" : value}
-					disabled={disabled}
-					aria-label={label}
-				/>
-			</div>
-		</>
+		<div className={fieldClassName}>
+			<label className={labelClassName}>
+				{label}
+				{isRequired && "*"}
+			</label>
+			{error && <span className={errorClassName}>{error}</span>}
+			<input
+				className={inputClassName}
+				type={type}
+				onChange={onChange}
+				placeholder={placeholder}
+				value={isNil(value) ? "" : value}
+				disabled={disabled}
+				aria-label={label}
+			/>
+		</div>
 	);
 }
 
